@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.enchantoutline.events.ItemModelUpdateEvent;
-import net.enchantoutline.EnchantmentGlintOutlineFabricOld;
 import net.enchantoutline.config.ItemOverride;
 import net.enchantoutline.shader.Shaders;
 import net.enchantoutline.util.QuadHelper;
@@ -31,7 +30,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
-import static net.enchantoutline.EnchantmentGlintOutlineFabricOld.*;
+import static net.enchantoutline.EnchantmentGlintOutline.*;
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
@@ -55,7 +54,7 @@ public class ItemRendererMixin {
         try {
             CURRENT_ITEM_STACK_STORAGE.set(itemStack);
 
-            var config = EnchantmentGlintOutlineFabricOld.getConfig();
+            var config = EnchantmentGlintOutline.getConfig();
             if (config != null && config.isEnabled() && itemStack.hasFoil()) {
                 List<BakedQuad> quads = model.getQuads(null, null, net.minecraft.util.RandomSource.create(42L));
                 if (!quads.isEmpty()) better_enchants$renderEnchantmentOutline(poseStack, bufferSource, model, quads, null);

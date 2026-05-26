@@ -2,14 +2,12 @@
 	"required": true,
 	"package": "net.enchantoutline.mixin",
 	"compatibilityLevel": "JAVA_21",
-	"plugin": "net.enchantoutline.EnchantOutlineMixinPlugin",
 	"mixins": [
 		"BufferBuilderStorageMixin",
 		"EquipmentRendererMixin",
 		"MultiBufferSource_BufferSourceMixin",
 		"RenderLayerMixin",
-		"TridentEntityRendererMixin",
-		"sodium.ModelCuboidMixin"
+		"TridentEntityRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

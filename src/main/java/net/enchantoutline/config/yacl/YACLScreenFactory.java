@@ -4,13 +4,13 @@ import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
 import dev.isxander.yacl3.impl.controller.BooleanControllerBuilderImpl;
-import net.enchantoutline.EnchantmentGlintOutlineFabricOld;
+import net.enchantoutline.EnchantmentGlintOutline;
 import net.enchantoutline.config.EnchantmentOutlineConfig;
 import net.enchantoutline.config.ItemOverrideContainer;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
 
@@ -26,14 +26,14 @@ public class YACLScreenFactory {
                         .option(Option.<Boolean>createBuilder()
                                 .name(Component.translatable("option.enchantoutline.rendermain"))
                                 .description(OptionDescription.of(Component.translatable("tooltip.option.enchantoutline.rendermain")))
-                                .binding(defaultConfig.isEnabled(), EnchantmentGlintOutlineFabricOld.getConfig()::isEnabled, EnchantmentGlintOutlineFabricOld.getConfig()::setEnabled)
+                                .binding(defaultConfig.isEnabled(), EnchantmentGlintOutline.getConfig()::isEnabled, EnchantmentGlintOutline.getConfig()::setEnabled)
                                 .controller(BooleanControllerBuilderImpl::new)
                                 .build())
                         .option(Option.<Color>createBuilder()
                                 .name(Component.translatable("option.enchantoutline.solidcolor"))
                                 .description(OptionDescription.of(Component.translatable("tooltip.option.enchantoutline.solidcolor").append(Component.translatable("tooltip.error.yamlcolorissue").withStyle(ChatFormatting.YELLOW))))
-                                .binding(EnchantmentOutlineConfig.getColorFromInt(defaultConfig.getOutlineColor()), () -> EnchantmentOutlineConfig.getColorFromInt(EnchantmentGlintOutlineFabricOld.getConfig().getOutlineColor()), (color) -> {
-                                    EnchantmentGlintOutlineFabricOld.getConfig().setBaseSolidOutlineColor(EnchantmentOutlineConfig.getIntFromColor(color));})
+                                .binding(EnchantmentOutlineConfig.getColorFromInt(defaultConfig.getOutlineColor()), () -> EnchantmentOutlineConfig.getColorFromInt(EnchantmentGlintOutline.getConfig().getOutlineColor()), (color) -> {
+                                    EnchantmentGlintOutline.getConfig().setBaseSolidOutlineColor(EnchantmentOutlineConfig.getIntFromColor(color));})
                                 .controller(opt -> ColorControllerBuilder.create(opt)
                                         .allowAlpha(true))
                                 .build())
@@ -45,7 +45,7 @@ public class YACLScreenFactory {
                                         .description(OptionDescription.of(Component.translatable("tooltip.option.compatibility.enchantoutline.skippass1").withStyle(ChatFormatting.YELLOW)
                                                 .append(Component.translatable("tooltip.option.compatibility.enchantoutline.skippass2").withStyle(ChatFormatting.RED))
                                                 .append(Component.translatable("tooltip.option.compatibility.enchantoutline.skippass3").withStyle(ChatFormatting.WHITE))))
-                                        .binding(defaultConfig.shouldRemoveRenderPass(), EnchantmentGlintOutlineFabricOld.getConfig()::shouldRemoveRenderPass, EnchantmentGlintOutlineFabricOld.getConfig()::setRemoveRenderPass)
+                                        .binding(defaultConfig.shouldRemoveRenderPass(), EnchantmentGlintOutline.getConfig()::shouldRemoveRenderPass, EnchantmentGlintOutline.getConfig()::setRemoveRenderPass)
                                         .controller(BooleanControllerBuilderImpl::new)
                                         .build())
                                 .build())
@@ -55,7 +55,7 @@ public class YACLScreenFactory {
                                 .option(Option.<Float>createBuilder()
                                         .name(Component.translatable("option.item.enchantoutline.size"))
                                         .description(OptionDescription.of(Component.translatable("tooltip.option.item.enchantoutline.size")))
-                                        .binding(defaultConfig.getOutlineSize(), EnchantmentGlintOutlineFabricOld.getConfig()::getOutlineSize, EnchantmentGlintOutlineFabricOld.getConfig()::setOutlineSize)
+                                        .binding(defaultConfig.getOutlineSize(), EnchantmentGlintOutline.getConfig()::getOutlineSize, EnchantmentGlintOutline.getConfig()::setOutlineSize)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
                                                 .range(0f, EnchantmentOutlineConfig.MAX_OUTLINE_SIZE)
                                                 .step(1f)
@@ -64,7 +64,7 @@ public class YACLScreenFactory {
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Component.translatable("option.item.enchantoutline.rendersolid"))
                                         .description(OptionDescription.of(Component.translatable("tooltip.option.item.enchantoutline.rendersolid")))
-                                        .binding(defaultConfig.shouldRenderSolid(), EnchantmentGlintOutlineFabricOld.getConfig()::shouldRenderSolid, EnchantmentGlintOutlineFabricOld.getConfig()::setRenderSolid)
+                                        .binding(defaultConfig.shouldRenderSolid(), EnchantmentGlintOutline.getConfig()::shouldRenderSolid, EnchantmentGlintOutline.getConfig()::setRenderSolid)
                                         .controller(BooleanControllerBuilderImpl::new)
                                         .build())
                                 .build())
@@ -72,9 +72,9 @@ public class YACLScreenFactory {
                                 .name(Component.translatable("list.enchantoutline.override.item"))
                                 .description(OptionDescription.createBuilder()
                                         .text(Component.translatable("tooltip.list.enchantoutline.override.item"))
-                                        .webpImage(Identifier.fromNamespaceAndPath(EnchantmentGlintOutlineFabricOld.MOD_ID, "textures/listexplained.webp"))
+                                        .webpImage(ResourceLocation.fromNamespaceAndPath(EnchantmentGlintOutline.MOD_ID, "textures/listexplained.webp"))
                                         .build())
-                                .binding(defaultConfig.getItemOverridesAsContainerList(), EnchantmentGlintOutlineFabricOld.getConfig()::getItemOverridesAsContainerList, EnchantmentGlintOutlineFabricOld.getConfig()::setItemOverridesFromContainerList)
+                                .binding(defaultConfig.getItemOverridesAsContainerList(), EnchantmentGlintOutline.getConfig()::getItemOverridesAsContainerList, EnchantmentGlintOutline.getConfig()::setItemOverridesFromContainerList)
                                 .controller(ItemOverrideContainerControllerBuilderImpl::new)
                                 .initial(ItemOverrideContainer::new)
                                 .build())
@@ -84,13 +84,13 @@ public class YACLScreenFactory {
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Component.translatable("option.equipment.enchantoutline.render"))
                                         .description(OptionDescription.of(Component.translatable("tooltip.option.equipment.enchantoutline.render")))
-                                        .binding(defaultConfig.shouldRenderArmor(), EnchantmentGlintOutlineFabricOld.getConfig()::shouldRenderArmor, EnchantmentGlintOutlineFabricOld.getConfig()::setRenderArmor)
+                                        .binding(defaultConfig.shouldRenderArmor(), EnchantmentGlintOutline.getConfig()::shouldRenderArmor, EnchantmentGlintOutline.getConfig()::setRenderArmor)
                                         .controller(BooleanControllerBuilderImpl::new)
                                         .build())
                                 .option(Option.<Float>createBuilder()
                                         .name(Component.translatable("option.equipment.enchantoutline.size"))
                                         .description(OptionDescription.of(Component.translatable("tooltip.option.equipment.enchantoutline.size")))
-                                        .binding(defaultConfig.getArmorOutlineSize(), EnchantmentGlintOutlineFabricOld.getConfig()::getArmorOutlineSize, EnchantmentGlintOutlineFabricOld.getConfig()::setArmorOutlineSize)
+                                        .binding(defaultConfig.getArmorOutlineSize(), EnchantmentGlintOutline.getConfig()::getArmorOutlineSize, EnchantmentGlintOutline.getConfig()::setArmorOutlineSize)
                                         .controller(opt -> FloatSliderControllerBuilder.create(opt)
                                                 .range(0f, EnchantmentOutlineConfig.MAX_OUTLINE_SIZE)
                                                 .step(1f)
@@ -99,7 +99,7 @@ public class YACLScreenFactory {
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Component.translatable("option.equipment.enchantoutline.rendersolid"))
                                         .description(OptionDescription.of(Component.translatable("tooltip.option.equipment.enchantoutline.rendersolid")))
-                                        .binding(defaultConfig.shouldRenderArmorSolid(), EnchantmentGlintOutlineFabricOld.getConfig()::shouldRenderArmorSolid, EnchantmentGlintOutlineFabricOld.getConfig()::setRenderArmorSolid)
+                                        .binding(defaultConfig.shouldRenderArmorSolid(), EnchantmentGlintOutline.getConfig()::shouldRenderArmorSolid, EnchantmentGlintOutline.getConfig()::setRenderArmorSolid)
                                         .controller(BooleanControllerBuilderImpl::new)
                                         .build())
                                 .build())
@@ -107,14 +107,14 @@ public class YACLScreenFactory {
                                 .name(Component.translatable("list.enchantoutline.override.equipment"))
                                 .description(OptionDescription.createBuilder()
                                         .text(Component.translatable("tooltip.list.enchantoutline.override.equipment"))
-                                        .webpImage(Identifier.fromNamespaceAndPath(EnchantmentGlintOutlineFabricOld.MOD_ID, "textures/listexplained.webp"))
+                                        .webpImage(ResourceLocation.fromNamespaceAndPath(EnchantmentGlintOutline.MOD_ID, "textures/listexplained.webp"))
                                         .build())
-                                .binding(defaultConfig.getArmorOverridesAsContainerList(), EnchantmentGlintOutlineFabricOld.getConfig()::getArmorOverridesAsContainerList, EnchantmentGlintOutlineFabricOld.getConfig()::setArmorOverridesFromContainerList)
+                                .binding(defaultConfig.getArmorOverridesAsContainerList(), EnchantmentGlintOutline.getConfig()::getArmorOverridesAsContainerList, EnchantmentGlintOutline.getConfig()::setArmorOverridesFromContainerList)
                                 .controller(ItemOverrideContainerControllerBuilderImpl::new)
                                 .initial(ItemOverrideContainer::new)
                                 .build())
                         .build())
-                .save(EnchantmentGlintOutlineFabricOld.getConfig()::saveAsync)
+                .save(EnchantmentGlintOutline.getConfig()::saveAsync)
                 .build();
 
         return configScreen.generateScreen(parent);

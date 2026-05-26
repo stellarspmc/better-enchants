@@ -2,7 +2,7 @@ package net.enchantoutline.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.enchantoutline.EnchantmentGlintOutlineFabricOld;
+import net.enchantoutline.EnchantmentGlintOutline;
 import net.minecraft.util.FastColor;
 import net.neoforged.fml.loading.FMLConfig;
 import org.jetbrains.annotations.Nullable;
@@ -242,7 +242,7 @@ public class EnchantmentOutlineConfig {
             try(BufferedWriter writer = Files.newBufferedWriter(CONFIG_FILE)) {
                 writer.write(toJson());
             } catch (Exception e) {
-                EnchantmentGlintOutlineFabricOld.LOGGER.error("Error saving Enchant Glint Outline config.", e);
+                EnchantmentGlintOutline.LOGGER.error("Error saving Enchant Glint Outline config.", e);
                 throw new CompletionException(e);
             }
         });

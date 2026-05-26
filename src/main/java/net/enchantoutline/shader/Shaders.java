@@ -2,7 +2,7 @@ package net.enchantoutline.shader;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.enchantoutline.EnchantmentGlintOutlineFabricOld;
+import net.enchantoutline.EnchantmentGlintOutline;
 import net.enchantoutline.mixin_accessors.RenderLayerAccessor;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class Shaders {
-    private static final String MOD_ID = EnchantmentGlintOutlineFabricOld.MOD_ID;
+    private static final String MOD_ID = EnchantmentGlintOutline.MOD_ID;
 
     // --- 1.21.1 Shader Registration ---
     // Custom shaders are not built inline in 1.21.1. You must register "core/outline"

@@ -4,11 +4,9 @@ import dev.isxander.yacl3.api.utils.Dimension;
 import dev.isxander.yacl3.gui.AbstractWidget;
 import dev.isxander.yacl3.gui.YACLScreen;
 import dev.isxander.yacl3.gui.controllers.ControllerWidget;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.input.KeyEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -50,27 +48,27 @@ public class ItemOverrideContainerElement extends ControllerWidget<ItemOverrideC
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean doubleClick) {
-        return ContainerEventHandler.super.mouseClicked(mouseButtonEvent, doubleClick);
-    }
-
-    @Override
-    public boolean keyPressed(KeyEvent keyEvent) {
-        return ContainerEventHandler.super.keyPressed(keyEvent);
-    }
-
-    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontal, double vertical) {
         return ContainerEventHandler.super.mouseScrolled(mouseX, mouseY, horizontal, vertical);
     }
 
     @Override
-    public boolean mouseDragged(MouseButtonEvent mouseButtonEvent, double dx, double dy) {
-        return ContainerEventHandler.super.mouseDragged(mouseButtonEvent, dx, dy);
+    public boolean keyPressed(int key, int scancode, int modifiers) {
+        return ContainerEventHandler.super.keyPressed(key, scancode, modifiers);
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
+        return ContainerEventHandler.super.mouseDragged(mouseX, mouseY, button, dx, dy);
+    }
+
+    @Override
+    protected void drawValueText(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         //TODO: change these equations whenever YACL gets fixed
         int xPos = getDimension().x();
         int width = getDimension().width()/8;
@@ -90,14 +88,14 @@ public class ItemOverrideContainerElement extends ControllerWidget<ItemOverrideC
         overrideColorWidget.setDimension(overrideColorWidget.getDimension().withY(yPos).withX(xPos).withWidth((int)(width/1.7)).withHeight(height));
         colorWidget.setDimension(overrideColorWidget.getDimension().withY(yPos).withX(getDimension().x()).withWidth((int)(width*8.1)).withHeight(height));
 
-        colorWidget.extractRenderState(graphics, mouseX, mouseY, delta);
-        itemWidget.extractRenderState(graphics, mouseX, mouseY, delta);
-        renderWidget.extractRenderState(graphics, mouseX, mouseY, delta);
-        overrideSizeWidget.extractRenderState(graphics, mouseX, mouseY, delta);
-        sizeWidget.extractRenderState(graphics, mouseX, mouseY, delta);
-        overrideRenderSolidWidget.extractRenderState(graphics, mouseX, mouseY, delta);
-        renderSolidWidget.extractRenderState(graphics, mouseX, mouseY, delta);
-        overrideColorWidget.extractRenderState(graphics, mouseX, mouseY, delta);
+        colorWidget.render(graphics, mouseX, mouseY, delta);
+        itemWidget.render(graphics, mouseX, mouseY, delta);
+        renderWidget.render(graphics, mouseX, mouseY, delta);
+        overrideSizeWidget.render(graphics, mouseX, mouseY, delta);
+        sizeWidget.render(graphics, mouseX, mouseY, delta);
+        overrideRenderSolidWidget.render(graphics, mouseX, mouseY, delta);
+        renderSolidWidget.render(graphics, mouseX, mouseY, delta);
+        overrideColorWidget.render(graphics, mouseX, mouseY, delta);
     }
 
     @Override
