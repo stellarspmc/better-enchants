@@ -13,42 +13,55 @@ void main() {
     // 1. Core color extraction
     vec4 baseColor = texture(Sampler0, texCoord0) * vertexColor * ColorModulator;
 
-    // 2. Compute precise texel step sizes
     vec2 atlasSize = vec2(textureSize(Sampler0, 0));
     vec2 texelSize = 1.0 / atlasSize;
 
-    // 3. Strict Border Checking Logic
-    bool isNearEdge = false;
+    // ==========================================================
+    // SUBPIXEL CONFIGURATION
+    // Change this float to whatever you want!
+    // 0.5 = half a texture pixel line
+    // 1.5 = one and a half texture pixels line
+    // ==========================================================
+    float targetThickness = 0.75;
 
-    // Adjust this integer to change the exact thickness of your line (1 = 1 pixel wide, 2 = 2 pixels wide)
-    int lineThickness = 1;
+    float edgeDistance = 0.0;
 
-    // Look in a tight cross/diamond pattern for maximum pixel-art precision
-    for (int x = -lineThickness; x <= lineThickness; x++) {
-        for (int y = -lineThickness; y <= lineThickness; y++) {
-            // Optimization: Skip checking far corners to keep the border rounded/hugging
-            if (abs(x) + abs(y) > lineThickness) continue;
+    // We scan slightly past our target thickness to capture the fractional blend
+    float scanLimit = ceil(targetThickness) + 1.0;
 
+    for (float x = -scanLimit; x <= scanLimit; x += 1.0) {
+        for (float y = -scanLimit; y <= scanLimit; y += 1.0) {
+            // Keep a circular/Euclidean distance check for smooth subpixel rounding
+            float currentDist = length(vec2(x, y));
+            if (currentDist > scanLimit) continue;
+
+            // Sample the alpha at this offset
             float sampledAlpha = texture(Sampler0, texCoord0 + vec2(x, y) * texelSize).a;
-            if (sampledAlpha > 0.1) {
-                isNearEdge = true;
-                break; // Found the tool! We know this pixel belongs to the outline.
+
+            // If we hit item opacity, calculate how much this sample contributes
+            // based on how far away it is
+            if (sampledAlpha > 0.01) {
+                // Weight the distance by the alpha gradient
+                float estimatedDist = currentDist - (sampledAlpha * 0.5);
+                if (edgeDistance == 0.0 || estimatedDist < edgeDistance) {
+                    edgeDistance = estimatedDist;
+                }
             }
         }
-        if (isNearEdge) break;
     }
 
     // 4. Fragment routing rules
     if (baseColor.a < 0.1) {
-        // We are OUTSIDE the tool. If we detected the tool nearby, draw a constant crisp line.
-        if (isNearEdge) {
-            // Solid bright neon purple/magenta (No blurry transparency fading!)
+        // We are OUTSIDE the tool.
+        // Use a sharp step threshold at our exact subpixel float value!
+        if (edgeDistance > 0.0 && edgeDistance <= targetThickness) {
+            // Perfectly crisp, constant solid line, even at fractional widths
             fragColor = vec4(0.85, 0.2, 1.0, 1.0) * GlintAlpha;
         } else {
-            discard; // Empty sky / block background
+            discard;
         }
     } else {
-        // We are INSIDE the tool. Keep your clean internal enchanted glint sheen overlay.
+        // We are INSIDE the tool. Keep internal glint sheen.
         vec4 enchantSheen = vec4(0.6, 0.2, 0.9, 0.3) * GlintAlpha;
         fragColor = mix(baseColor, enchantSheen, 0.25);
     }
