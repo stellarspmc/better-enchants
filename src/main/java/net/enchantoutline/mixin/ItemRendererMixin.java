@@ -44,23 +44,25 @@ public class ItemRendererMixin {
             original.call(instance, model, stack, packedLight, packedOverlay, poseStack, originalConsumer);
 
             // 2. Evaluate configurations and overrides
+            EnchantmentGlintOutline.LOGGER.info(itemStack.toString());
             var config = EnchantmentGlintOutline.getConfig();
             if (config == null || !config.isEnabled() || !itemStack.hasFoil()) return;
 
+            EnchantmentGlintOutline.LOGGER.info(itemStack.toString());
             @Nullable ItemOverride override = config.getItemOverride(itemStack.getItem().toString());
             if (override != null && !override.shouldRender()) return;
 
             // 3. Process custom outline overlays
             float scale = config.getScaleFactorFromOutlineSize(config.getOutlineSizeOverrideOrDefault(override, false));
-
+            EnchantmentGlintOutline.LOGGER.info("pre if");
             // Grab item particle sprite to feed into texture sheet coordinates
             var sprite = model.getParticleIcon();
 
             if (config.getRenderSolidOverrideOrDefault(override, false)) {
                 int colorTint = config.getOutlineColorAsInt(config.getOutlineColorOverrideOrDefault(override));
-
-                RenderType colorLayer = RenderLayerHelper.renderLayerFromSpriteDoubleSided(sprite, EnchantmentGlintOutline.COLOR_LAYERS, Shaders::createColorRenderLayerNoCull, Shaders::createColorRenderLayerCull, Shaders.COLOR_CUTOUT_LAYER, false);
-                RenderType zFixLayer = RenderLayerHelper.renderLayerFromSpriteDoubleSided(sprite, EnchantmentGlintOutline.ZFIX_LAYERS, Shaders::createZFixRenderLayerNoCull, Shaders::createZFixRenderLayerCull, Shaders.ZFIX_CUTOUT_LAYER, false);
+                EnchantmentGlintOutline.LOGGER.info("if");
+                RenderType colorLayer = RenderLayerHelper.renderLayerFromSpriteDoubleSided(sprite, EnchantmentGlintOutline.COLOR_LAYERS, Shaders::createColorRenderLayerNoCull, Shaders::createColorRenderLayerCull, Shaders.getColorLayer(), false);
+                RenderType zFixLayer = RenderLayerHelper.renderLayerFromSpriteDoubleSided(sprite, EnchantmentGlintOutline.ZFIX_LAYERS, Shaders::createZFixRenderLayerNoCull, Shaders::createZFixRenderLayerCull, Shaders.getZFixLayer(), false);
 
                 // Wrap buffer requests inside our stream thickener
                 VertexConsumer colorConsumer = new ThickenedVertexConsumer(bufferSource.getBuffer(colorLayer), scale);
@@ -69,20 +71,26 @@ public class ItemRendererMixin {
                 // Directly stream geometry through the thickener passes
                 original.call(instance, model, stack, Integer.MAX_VALUE, packedOverlay, poseStack, colorConsumer);
                 original.call(instance, model, stack, packedLight, packedOverlay, poseStack, zFixConsumer);
-
+                EnchantmentGlintOutline.LOGGER.info(itemStack.toString());
             } else {
-                RenderType glintLayer = RenderLayerHelper.renderLayerFromSpriteDoubleSided(sprite, EnchantmentGlintOutline.GLINT_LAYERS, Shaders::createGlintRenderLayerNoCull, Shaders::createGlintRenderLayerCull, Shaders.GLINT_CUTOUT_LAYER, false);
+                RenderType glintLayer = RenderLayerHelper.renderLayerFromSpriteDoubleSided(sprite, EnchantmentGlintOutline.GLINT_LAYERS, Shaders::createGlintRenderLayerNoCull, Shaders::createGlintRenderLayerCull, Shaders.getGlintLayer(), false);
 
-                VertexConsumer customGlintConsumer = new ThickenedVertexConsumer(bufferSource.getBuffer(glintLayer), scale);
-                VertexConsumer nativeGlintConsumer = new ThickenedVertexConsumer(bufferSource.getBuffer(RenderType.glint()), scale);
+                if (Shaders.outlineShaderInstance != null) {
+                    if (Shaders.outlineShaderInstance.getId() == -1) return; // The shader is not ready, skip this frame to prevent NPE
 
-                // Directly stream geometry through the thickener passes
-                original.call(instance, model, stack, packedLight, packedOverlay, poseStack, customGlintConsumer);
-                original.call(instance, model, stack, packedLight, packedOverlay, poseStack, nativeGlintConsumer);
+                    VertexConsumer customGlintConsumer = new ThickenedVertexConsumer(bufferSource.getBuffer(glintLayer), scale);
+                    VertexConsumer nativeGlintConsumer = new ThickenedVertexConsumer(bufferSource.getBuffer(RenderType.glint()), scale);
+                    EnchantmentGlintOutline.LOGGER.info("else");
+                    // Directly stream geometry through the thickener passes
+                    original.call(instance, model, stack, packedLight, packedOverlay, poseStack, customGlintConsumer);
+                    original.call(instance, model, stack, packedLight, packedOverlay, poseStack, nativeGlintConsumer);
+                    EnchantmentGlintOutline.LOGGER.info(itemStack.toString());
+                }
             }
         } finally {
             // Clean up the thread container immediately after drawing finishes
-            RenderLayerHelper.clearCurrentRenderingStack();
+            //RenderLayerHelper.clearCurrentRenderingStack();
+            EnchantmentGlintOutline.LOGGER.info("done");
         }
     }
 }

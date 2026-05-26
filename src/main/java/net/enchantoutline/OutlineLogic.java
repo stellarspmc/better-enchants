@@ -47,7 +47,7 @@ public class OutlineLogic {
                     EnchantmentGlintOutline.COLOR_LAYERS,
                     Shaders::createColorRenderLayerNoCull,
                     Shaders::createColorRenderLayerCull,
-                    Shaders.COLOR_CUTOUT_LAYER,
+                    Shaders.getColorLayer(),
                     true
             );
 
@@ -60,7 +60,7 @@ public class OutlineLogic {
                     EnchantmentGlintOutline.GLINT_LAYERS,
                     Shaders::createGlintRenderLayerNoCull,
                     Shaders::createGlintRenderLayerCull,
-                    Shaders.GLINT_CUTOUT_LAYER,
+                    Shaders.getGlintLayer(),
                     true
             );
 
@@ -96,7 +96,7 @@ public class OutlineLogic {
                             EnchantmentGlintOutline.COLOR_LAYERS,
                             Shaders::createColorRenderLayerNoCull,
                             Shaders::createColorRenderLayerCull,
-                            Shaders.COLOR_CUTOUT_LAYER,
+                            Shaders.getColorLayer(),
                             false
                     );
 
@@ -108,7 +108,7 @@ public class OutlineLogic {
                             EnchantmentGlintOutline.GLINT_LAYERS,
                             Shaders::createGlintRenderLayerNoCull,
                             Shaders::createGlintRenderLayerCull,
-                            Shaders.GLINT_CUTOUT_LAYER,
+                            Shaders.getGlintLayer(),
                             false
                     );
 

@@ -3,6 +3,8 @@ package net.enchantoutline.util;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.enchantoutline.EnchantmentGlintOutline;
+import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -14,62 +16,80 @@ import java.util.Map;
 
 public class Shaders {
 
-    private static final Map<ResourceLocation, RenderType> GLINT_CACHE = Maps.newHashMap();
     public static ShaderInstance outlineShaderInstance;
     private static final RenderStateShard.ShaderStateShard OUTLINE_SHADER_SHARD = new RenderStateShard.ShaderStateShard(() -> outlineShaderInstance != null ? outlineShaderInstance : GameRenderer.getPositionTexShader());
     //private static final Supplier<ShaderInstance> OUTLINE_SHADER = () -> outlineShaderInstance;
     //private static final RenderStateShard.ShaderStateShard OUTLINE_SHADER_SHARD = new RenderStateShard.ShaderStateShard(OUTLINE_SHADER);
 
-    public static final RenderType GLINT_CUTOUT_LAYER = RenderType.create(
-            "enchout_glint_normal",
-            DefaultVertexFormat.BLOCK,
-            VertexFormat.Mode.QUADS,
-            1536,
-            true,  // affectsCrumbling
-            false, // sortOnUpload
-            RenderType.CompositeState.builder()
-                    .setShaderState(OUTLINE_SHADER_SHARD)
-                    .setWriteMaskState(RenderStateShard.DEPTH_WRITE)
-                    .setCullState(RenderStateShard.CULL)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
-                    .createCompositeState(false)
-    );
+    private static RenderType cachedGlintLayer = null;
+    private static RenderType cachedColorLayer = null;
+    private static RenderType cachedZFixLayer = null;
 
-    public static final RenderType COLOR_CUTOUT_LAYER = RenderType.create(
-            "enchout_color_normal",
-            DefaultVertexFormat.BLOCK,
-            VertexFormat.Mode.QUADS,
-            1536,
-            true,
-            false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(OUTLINE_SHADER_SHARD)
-                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
-                    .setCullState(RenderStateShard.CULL)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
-                    .createCompositeState(false)
-    );
+    public static RenderType getGlintLayer() {
+        if (cachedGlintLayer == null) {
+            cachedGlintLayer = RenderType.create(
+                    "enchout_glint_normal",
+                    DefaultVertexFormat.BLOCK,
+                    VertexFormat.Mode.QUADS,
+                    1536,
+                    true,  // affectsCrumbling
+                    false, // sortOnUpload
+                    RenderType.CompositeState.builder()
+                            .setShaderState(OUTLINE_SHADER_SHARD)
+                            .setWriteMaskState(RenderStateShard.DEPTH_WRITE)
+                            .setCullState(RenderStateShard.CULL)
+                            .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
+                            .setLightmapState(RenderStateShard.LIGHTMAP)
+                            .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
+                            .createCompositeState(false)
+            );
+        }
+        return cachedGlintLayer;
+    }
 
-    public static final RenderType ZFIX_CUTOUT_LAYER = RenderType.create(
-            "enchout_zfix_normal",
-            DefaultVertexFormat.BLOCK,
-            VertexFormat.Mode.QUADS,
-            1536,
-            true,
-            false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(OUTLINE_SHADER_SHARD)
-                    .setWriteMaskState(RenderStateShard.DEPTH_WRITE)
-                    .setCullState(RenderStateShard.CULL)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
-                    .createCompositeState(false)
-    );
+    public static RenderType getColorLayer() {
+        if (cachedColorLayer == null) {
+            cachedColorLayer = RenderType.create(
+                    "enchout_color_normal",
+                    DefaultVertexFormat.BLOCK,
+                    VertexFormat.Mode.QUADS,
+                    1536,
+                    true,
+                    false,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(OUTLINE_SHADER_SHARD)
+                            .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                            .setCullState(RenderStateShard.CULL)
+                            .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
+                            .setLightmapState(RenderStateShard.LIGHTMAP)
+                            .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
+                            .createCompositeState(false)
+            );
+        }
+        return cachedColorLayer;
+    }
+
+    public static RenderType getZFixLayer() {
+        if (cachedZFixLayer == null) {
+            cachedZFixLayer = RenderType.create(
+                    "enchout_zfix_normal",
+                    DefaultVertexFormat.BLOCK,
+                    VertexFormat.Mode.QUADS,
+                    1536,
+                    true,
+                    false,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(OUTLINE_SHADER_SHARD)
+                            .setWriteMaskState(RenderStateShard.DEPTH_WRITE)
+                            .setCullState(RenderStateShard.CULL)
+                            .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
+                            .setLightmapState(RenderStateShard.LIGHTMAP)
+                            .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
+                            .createCompositeState(false)
+            );
+        }
+        return cachedZFixLayer;
+    }
 
     /*public static final RenderType ARMOR_ENTITY_GLINT_FIX = RenderType.create(
             "enchout_glint_armor",
