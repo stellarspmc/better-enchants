@@ -17,9 +17,11 @@ import java.util.Map;
 public class Shaders {
 
     public static ShaderInstance outlineShaderInstance;
-    private static final RenderStateShard.ShaderStateShard OUTLINE_SHADER_SHARD = new RenderStateShard.ShaderStateShard(() -> outlineShaderInstance != null ? outlineShaderInstance : GameRenderer.getPositionTexShader());
-    //private static final Supplier<ShaderInstance> OUTLINE_SHADER = () -> outlineShaderInstance;
-    //private static final RenderStateShard.ShaderStateShard OUTLINE_SHADER_SHARD = new RenderStateShard.ShaderStateShard(OUTLINE_SHADER);
+    private static final RenderStateShard.ShaderStateShard OUTLINE_SHADER_SHARD =
+            new RenderStateShard.ShaderStateShard(() -> {
+                if (outlineShaderInstance != null) return outlineShaderInstance;
+                return GameRenderer.getPositionTexShader();
+            });
 
     private static RenderType cachedGlintLayer = null;
     private static RenderType cachedColorLayer = null;

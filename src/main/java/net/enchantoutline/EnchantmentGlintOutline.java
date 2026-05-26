@@ -29,7 +29,6 @@ public class EnchantmentGlintOutline {
     public static final CustomRenderLayers ZFIX_LAYERS = new CustomRenderLayers();
 
     public EnchantmentGlintOutline(IEventBus modEventBus) {
-        LOGGER.info("hiiiiiiiiiiiiii");
         loadConfig();
     }
 
