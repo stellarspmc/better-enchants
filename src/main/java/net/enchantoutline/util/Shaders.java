@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 
 public class Shaders {
@@ -24,7 +23,7 @@ public class Shaders {
         if (cachedOutlineLayer == null) {
             cachedOutlineLayer = RenderType.create(
                     "enchout_outline",
-                    DefaultVertexFormat.POSITION_TEX,
+                    DefaultVertexFormat.NEW_ENTITY,
                     VertexFormat.Mode.QUADS,
                     1536,
                     false, false,
