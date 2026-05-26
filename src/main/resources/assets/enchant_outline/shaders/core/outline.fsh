@@ -18,82 +18,70 @@ void main() {
 
     if (baseColor.a < 0.1) {
         // ==========================================================
-        // 3D GEOMETRY EXTRUSION GUARD (Ghosting Fix)
-        // Detects highly stretched/degenerate side faces from 3D models.
-        // Ghost lines near sword guards are instantly dropped.
+        // 3D GEOMETRY EXTRUSION GUARD (Ghosting & Artifact Fix)
+        // Detects highly stretched side faces from 3D models using a scaling ratio.
+        // REMOVED the 'scX < 0.05' check so the glint NEVER disappears up close!
         // ==========================================================
         vec2 derX = dFdx(texCoord0 * atlasSize);
         vec2 derY = dFdy(texCoord0 * atlasSize);
         float scX = length(derX);
         float scY = length(derY);
 
-        // Highly stretched geometry faces (ratio > 5.0) or frozen faces (<0.05) are discarded.
-        if (scX < 0.05 || scY < 0.05 || max(scX, scY) / max(0.05, min(scX, scY)) > 5.0) {
+        // Stretched 3D side quads have massive coordinate distortion ratios (> 6.0),
+        // while flat front faces stay uniform near 1.0 regardless of distance.
+        float maxSc = max(scX, scY);
+        float minSc = max(0.0001, min(scX, scY)); // Prevent division by zero
+
+        if ((maxSc / minSc) > 6.0) {
             discard;
         }
 
         // ==========================================================
-        // TRUE NEON BLOOM CONFIGURATION
-        // targetThickness: The softness/bloom width. conceptual gold is often conceptual and soft.
-        // lower = crisper line, higher = wider conceptual diffuse trail.
-        // 0.6 means the glow trail is roughly 60% of an item pixel width.
+        // TRUE SUBPIXEL BLOOM CONFIGURATION
+        // targetThickness: Controls the softness/width of the glow trail.
+        // Set slightly above 1.0 to give tips a beautiful, fully rounded wrap.
         // ==========================================================
-        float targetThickness = 0.6;
+        float targetThickness = 1.25;
 
-        // 2. High-Precision Subpixel Coordinate Mapping
+        // High-Precision Subpixel Coordinate Mapping
         vec2 pixelCoord = texCoord0 * atlasSize;
         vec2 subPixel = fract(pixelCoord);
 
-        // 3. Circular Euclidean Neighbor Search (Broadened Search Fixes Sword Tip)
+        // ==========================================================
+        // 5x5 PERFECT BOX SEARCH (Fixes Missing Tips & Bottoms)
+        // Expanding to a 5x5 grid ensures long items and isolated diagonal tips
+        // have enough coordinate runway to calculate smooth subpixel corners.
+        // ==========================================================
         float minDist = 999.0;
 
-        // Broadened search radius (3x3 grid) ensures we find diagonal connections
-        // like isolated sword tip pixels that standard orthogonal checks miss.
-        for (float x = -1.0; x <= 1.0; x += 1.0) {
-            for (float y = -1.0; y <= 1.0; y += 1.0) {
+        for (float x = -2.0; x <= 2.0; x += 1.0) {
+            for (float y = -2.0; y <= 2.0; y += 1.0) {
                 if (x == 0.0 && y == 0.0) continue;
 
-                // Sample the neighbor
+                // Sample the neighbor pixel
                 float sampledAlpha = texture(Sampler0, texCoord0 + vec2(x, y) * texelSize).a;
-                if (sampledAlpha > 0.1) {
-                    // Correct subPixel space based on quadrant to maintain correct distance logic
-                    vec2 cornerVec;
-                    cornerVec.x = (x > 0.0) ? 1.0 - subPixel.x : subPixel.x;
-                    cornerVec.y = (y > 0.0) ? 1.0 - subPixel.y : subPixel.y;
 
-                    if (x == 0.0) {
-                        // Pure Orthogonal (Up/Down) distance
-                        minDist = min(minDist, cornerVec.y);
-                    } else if (y == 0.0) {
-                        // Pure Orthogonal (Left/Right) distance
-                        minDist = min(minDist, cornerVec.x);
-                    } else {
-                        // Diagonal Euclidean rounding corner logic
-                        minDist = min(minDist, length(cornerVec));
-                    }
+                if (sampledAlpha > 0.1) {
+                    // Hardware-optimized calculation for exact distance to the neighbor's pixel boundary
+                    vec2 distanceToBox = max(vec2(0.0), vec2(x, y) - subPixel) + max(vec2(0.0), subPixel - vec2(x + 1.0, y + 1.0));
+                    float boxDist = length(distanceToBox);
+
+                    minDist = min(minDist, boxDist);
                 }
             }
         }
 
-        // ==========================================================
-        // HDR NEON BLOOM LUMINOSITY GRADIENT
-        // Squeezes the distance into a luminosity gradient for soft edges.
-        // Blend is crucial; a sharp conceptual gold conceptual neon trail looks better than standard vector lines.
-        // lower = crisper neon trail, higher = softer diffuse trail.
-        // ==========================================================
+        // Smoothly blend the edge based on our precise subpixel distance
         float bloomLuminosity = smoothstep(targetThickness, 0.0, minDist);
 
         if (bloomLuminosity > 0.02) {
-            // HIGH-INTENSITY conceptual gold CEON GOLD (Concept matched to image_12.png)
-            // CONCEPTUAL neon glow relies on color values > 1.0. (HDR)
-            vec4 brightGoldNeon = vec4(2.0, 1.6, 0.35, bloomLuminosity * 1.0) * GlintAlpha;
+            vec4 brightGoldNeon = vec4(0.85, 0.70, 0.25, bloomLuminosity * 1.0) * GlintAlpha;
             fragColor = brightGoldNeon;
         } else {
             discard; // Pure empty space
         }
     } else {
-        // We are INSIDE the tool body. Keep standard glint sheen conceptual gold overlay.
-        vec4 goldSheen = vec4(0.98, 0.80, 0.20, 0.25) * GlintAlpha;
+        vec4 goldSheen = vec4(0.85, 0.70, 0.25, 0.25) * GlintAlpha;
         fragColor = mix(baseColor, goldSheen, 0.18);
     }
 }
