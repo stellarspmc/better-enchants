@@ -12,13 +12,6 @@ import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * NeoForge 1.21.1 equivalent of EquipmentRendererQueueEnchantedCallback.
- * Implements ICancellableEvent so listeners can call event.setCanceled(true)
- * instead of returning InteractionResult.FAIL.
- *
- * @param <S> The type of the entity/state used by the armor/equipment model.
- */
 public class EquipmentRendererEnchantedEvent<S> extends Event implements ICancellableEvent {
     private final ItemStack renderedStack;
     private final MultiBufferSource bufferSource;

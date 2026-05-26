@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class TridentEntityRendererEnchantedEvent<S> extends Event implements ICancellableEvent {
     private final MultiBufferSource bufferSource;
     private final Model model;
-    private final S entity; // Equivalent to 's'
+    private final S entity;
     private final PoseStack poseStack;
     private final RenderType renderLayer;
     private final int light;

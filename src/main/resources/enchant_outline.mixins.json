@@ -3,10 +3,7 @@
 	"package": "net.enchantoutline.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"BufferBuilderStorageMixin",
 		"EquipmentRendererMixin",
-		"MultiBufferSource_BufferSourceMixin",
-		"RenderLayerMixin",
 		"TridentEntityRendererMixin"
 	],
 	"injectors": {

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import net.enchantoutline.EnchantmentGlintOutline;
 import net.minecraft.util.FastColor;
 import net.neoforged.fml.loading.FMLConfig;
+import net.neoforged.fml.loading.FMLPaths;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -23,7 +24,7 @@ import java.util.concurrent.CompletionException;
  * Taken from webspeak
  */
 public class EnchantmentOutlineConfig {
-    public static final Path CONFIG_FILE = Path.of(FMLConfig.defaultConfigPath());
+    public static final Path CONFIG_FILE = FMLPaths.CONFIGDIR.get().resolve("enchant_outline.json");
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static final float MAX_OUTLINE_SIZE = 30;

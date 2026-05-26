@@ -3,12 +3,9 @@ package net.enchantoutline;
 import net.enchantoutline.config.EnchantmentOutlineConfig;
 import net.enchantoutline.config.ItemOverride;
 import net.enchantoutline.mixin.ItemRendererMixin;
-import net.enchantoutline.shader.Shaders;
 import net.enchantoutline.util.*;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -20,10 +17,9 @@ import java.nio.file.Path;
 
 @Mod(EnchantmentGlintOutline.MOD_ID)
 public class EnchantmentGlintOutline {
-    public static final String MOD_ID = "enchantment-glint-outline";
+    public static final String MOD_ID = "enchant_outline";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    // ThreadLocal to suppress ModelPart callbacks during our custom outline renders
     public static final ThreadLocal<Boolean> skipModelPartCallback = ThreadLocal.withInitial(() -> false);
 
     private static EnchantmentOutlineConfig config;
@@ -33,6 +29,7 @@ public class EnchantmentGlintOutline {
     public static final CustomRenderLayers ZFIX_LAYERS = new CustomRenderLayers();
 
     public EnchantmentGlintOutline(IEventBus modEventBus) {
+        LOGGER.info("hiiiiiiiiiiiiii");
         loadConfig();
     }
 
@@ -46,7 +43,7 @@ public class EnchantmentGlintOutline {
      */
     @Nullable
     public static ItemOverride getActiveOverride() {
-        ItemStack stack = ItemRendererMixin.enchantOutline$getCurrentlyRenderingStack();
+        ItemStack stack = RenderLayerHelper.getCurrentlyRenderingStack();
         if (stack == null) return null;
 
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());

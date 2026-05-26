@@ -3,23 +3,26 @@ loaderVersion = "[4,)" # Matches NeoForge for 1.21.x
 license = "CC0-1.0"
 
 [[mods]]
-modId = "enchant-outline"
-version = "${file.jarVersion}"
+modId = "enchant_outline"
+version = "3.2"
 displayName = "Enchantment Glint Outline"
 displayURL = "https://github.com/Da0neDatGotAway/enchant-outline" # Add if you have one
-logoFile = "assets/enchantment-glint-outline/icon.png"
+logoFile = "../assets/enchant_outline/icon.png"
 authors = "Da0neDatGotAway"
 credits = "Contributors: yo314159at, Igrium"
 description = 'Adds a fancy outline to enchanted items. Works with resource packs and vanilla shaders.'
 
-[[dependencies.enchant-outline]]
+[[mixins]]
+config = "enchant_outline.mixins.json"
+
+[[dependencies.enchant_outline]]
 modId = "neoforge"
 type = "required"
 versionRange = "[21.1,)" # Targets NeoForge 1.21.1+
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.enchant-outline]]
+[[dependencies.enchant_outline]]
 modId = "minecraft"
 type = "required"
 versionRange = "[1.21.1]"
@@ -27,7 +30,7 @@ ordering = "NONE"
 side = "BOTH"
 
 # Optional dependency for YetAnotherConfigLib if you are porting the YACL config
-[[dependencies.enchant-outline]]
+[[dependencies.enchant_outline]]
 modId = "yacl"
 type = "optional"
 versionRange = "[3.0,)"

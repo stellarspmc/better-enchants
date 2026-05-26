@@ -1,12 +1,13 @@
-package net.enchantoutline.events.subscriber;
+package net.enchantoutline;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.enchantoutline.EnchantmentGlintOutline;
 import net.enchantoutline.config.ItemOverride;
 import net.enchantoutline.events.EquipmentRendererEnchantedEvent;
 import net.enchantoutline.events.TridentEntityRendererEnchantedEvent;
-import net.enchantoutline.shader.Shaders;
+import net.enchantoutline.util.Shaders;
 import net.enchantoutline.util.*;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -14,10 +15,16 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(modid = EnchantmentGlintOutline.MOD_ID)
-public class EnchantmentGlintOutlineEventSubscriber {
+public class OutlineLogic {
+
+    private static void renderThickened(Model model, PoseStack poseStack, VertexConsumer consumer, int light, int overlay, int tint, float scale) {
+        ThickenedVertexConsumer thickConsumer = new ThickenedVertexConsumer(consumer, scale);
+        model.renderToBuffer(poseStack, thickConsumer, light, overlay, tint);
+    }
 
     @SubscribeEvent
     public static void onArmorRender(EquipmentRendererEnchantedEvent<?> event) {
+        System.out.println("!!! OUTLINE EVENT IS RUNNING FOR: " + event.getRenderedStack());
         var config = EnchantmentGlintOutline.getConfig();
         if (!config.isEnabled()) return;
 
@@ -46,8 +53,7 @@ public class EnchantmentGlintOutlineEventSubscriber {
 
             VertexConsumer buffer = event.getBufferSource().getBuffer(colorLayer);
 
-            // Draw via the thickened vertex wrapper
-            ModelHelper.renderThickened(event.getModel(), event.getPoseStack(), buffer, Integer.MAX_VALUE, event.getOverlay(), tint, scale);
+            renderThickened(event.getModel(), event.getPoseStack(), buffer, Integer.MAX_VALUE, event.getOverlay(), tint, scale);
         } else {
             RenderType glintLayer = RenderLayerHelper.renderLayerFromRenderLayerDoubleSided(
                     baseArmorLayer,
@@ -60,13 +66,13 @@ public class EnchantmentGlintOutlineEventSubscriber {
 
             VertexConsumer glintBuffer = event.getBufferSource().getBuffer(glintLayer);
 
-            // Draw via the thickened vertex wrapper
-            ModelHelper.renderThickened(event.getModel(), event.getPoseStack(), glintBuffer, event.getLight(), event.getOverlay(), event.getTintColor(), scale);
+            renderThickened(event.getModel(), event.getPoseStack(), glintBuffer, event.getLight(), event.getOverlay(), event.getTintColor(), scale);
         }
     }
 
     @SubscribeEvent
     public static void onTridentRender(TridentEntityRendererEnchantedEvent<ThrownTrident> event) {
+        System.out.println("!!! OUTLINE EVENT IS RUNNING FOR: " + event.getEntity());
         var config = EnchantmentGlintOutline.getConfig();
         if (!config.isEnabled()) return;
 
@@ -95,9 +101,7 @@ public class EnchantmentGlintOutlineEventSubscriber {
                     );
 
                     VertexConsumer buffer = event.getBufferSource().getBuffer(colorLayer);
-
-                    // Pure immediate mode drawing via our stream interceptor
-                    ModelHelper.renderThickened(event.getModel(), event.getPoseStack(), buffer, Integer.MAX_VALUE, 0, tint, scale);
+                    renderThickened(event.getModel(), event.getPoseStack(), buffer, Integer.MAX_VALUE, 0, tint, scale);
                 } else {
                     RenderType glintZLayer = RenderLayerHelper.renderLayerFromRenderLayerDoubleSided(
                             garbageHackPatchLayer,
@@ -111,11 +115,8 @@ public class EnchantmentGlintOutlineEventSubscriber {
                     VertexConsumer glintBuffer = event.getBufferSource().getBuffer(glintZLayer);
                     VertexConsumer nativeGlintBuffer = event.getBufferSource().getBuffer(event.getRenderLayer());
 
-                    // Draw the custom glint outline pass
-                    ModelHelper.renderThickened(event.getModel(), event.getPoseStack(), glintBuffer, Integer.MAX_VALUE, 0, 0xFFFFFFFF, scale);
-
-                    // Draw the native glint overlay pass
-                    ModelHelper.renderThickened(event.getModel(), event.getPoseStack(), nativeGlintBuffer, Integer.MAX_VALUE, 0, 0xFFFFFFFF, scale);
+                    renderThickened(event.getModel(), event.getPoseStack(), glintBuffer, Integer.MAX_VALUE, 0, 0xFFFFFFFF, scale);
+                    renderThickened(event.getModel(), event.getPoseStack(), nativeGlintBuffer, Integer.MAX_VALUE, 0, 0xFFFFFFFF, scale);
                 }
             }
         }

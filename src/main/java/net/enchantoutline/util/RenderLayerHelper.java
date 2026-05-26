@@ -4,27 +4,17 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Map;
 import java.util.function.Function;
 
 public class RenderLayerHelper {
     public static final Logger LOGGER = LoggerFactory.getLogger(RenderLayerHelper.class);
-
-    /**
-     * Checks if a RenderType has culling disabled (double-sided rendering).
-     */
-    public static boolean isRenderLayerDoubleSided(RenderType renderLayer) {
-        if (renderLayer instanceof RenderType.CompositeRenderType composite) {
-            RenderType.CompositeState state = composite.state; // Accessed via AT
-            if (state != null) return state.cullState == RenderStateShard.NO_CULL;
-
-        }
-        return false;
-    }
 
     @Nullable
     public static Map<String, ResourceLocation> getIdentifierFromSprite(TextureAtlasSprite sprite) {
@@ -96,8 +86,16 @@ public class RenderLayerHelper {
         return customRenderLayers.addCustomRenderLayer(storagePath, layerFactory.apply(identifier));
     }
 
-    @Nullable
-    public static RenderType getOrCreateRenderLayer(CustomRenderLayers customRenderLayers, Function<ResourceLocation, RenderType> layerCreationFunction, ResourceLocation identifier){
-        return getOrCreateRenderLayer(customRenderLayers, layerCreationFunction, identifier, identifier.toString());
+    private static final ThreadLocal<ItemStack> CURRENT_ITEM_STACK_STORAGE = ThreadLocal.withInitial(() -> null);
+    public static ItemStack getCurrentlyRenderingStack() {
+        return CURRENT_ITEM_STACK_STORAGE.get();
     }
+    public static void setCurrentlyRenderingStack(ItemStack item) {
+        CURRENT_ITEM_STACK_STORAGE.set(item);
+    }
+
+    public static void clearCurrentRenderingStack() {
+        CURRENT_ITEM_STACK_STORAGE.remove();
+    }
+
 }
