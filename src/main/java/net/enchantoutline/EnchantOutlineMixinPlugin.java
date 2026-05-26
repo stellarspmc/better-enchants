@@ -1,6 +1,6 @@
 package net.enchantoutline;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -11,19 +11,12 @@ import java.util.Set;
 public class EnchantOutlineMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName){
-        if(mixinClassName.contains("net.enchantoutline.mixin.sodium"))
-        {
-            if(FabricLoader.getInstance().isModLoaded("sodium"))
-            {
+        if(mixinClassName.contains("net.enchantoutline.mixin.sodium")) {
+            if (FMLLoader.getLoadingModList().getMods().stream().anyMatch(modInfo -> modInfo.getModId().equals("sodium"))) {
                 System.out.println("better-enchants: Sodium found. Applying mixin: " + mixinClassName);
                 return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return true;
+            } else return false;
+        } return true;
     }
 
     @Override

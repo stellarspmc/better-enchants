@@ -1,6 +1,6 @@
 package net.enchantoutline.util;
 
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.RenderType;
 
 import java.util.HashMap;
 import java.util.Map;

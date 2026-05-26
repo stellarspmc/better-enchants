@@ -1,10 +1,10 @@
 package net.enchantoutline.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.enchantoutline.events.AreVerticesNotSharedEvent;
 import net.enchantoutline.mixin_accessors.RenderLayerAccessor;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderSetup;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.client.renderer.RenderType;
+import net.neoforged.neoforge.common.NeoForge;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,70 +14,55 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(RenderType.class)
 public class RenderLayerMixin implements RenderLayerAccessor {
 
-    @Shadow
-    @Final
-    private RenderSetup state;
-
     @ModifyReturnValue(method = "canConsolidateConsecutiveGeometry", at = @At("RETURN"))
-    private boolean enchantOutline$canConsolidateConsecutiveGeometry(boolean original){
-        // Yarn's areVerticesNotShared inverts to Mojang's canConsolidateConsecutiveGeometry.
-        // If any listener says "vertices not shared", consolidation is disallowed.
-        @Nullable Boolean result = net.enchantoutline.events.RenderLayer.AreVerticesNotSharedCallback.EVENT.invoker().getVerticesNotShared((RenderType) (Object)this, !original);
+    private boolean enchantOutline$canConsolidateConsecutiveGeometry(boolean original) {
+        // Create and post the NeoForge event.
+        // We pass '!original' because 'not shared' is the inverse of 'can consolidate'.
+        AreVerticesNotSharedEvent event = new AreVerticesNotSharedEvent((RenderType) (Object) this, !original);
+        NeoForge.EVENT_BUS.post(event);
 
-        if(result != null)
-        {
-            return true;
+        Boolean result = event.getResult();
+        if (result != null) {
+            // If a listener explicitly demands "vertices are not shared",
+            // we must return FALSE to disallow consecutive geometry consolidation.
+            return !result;
         }
+
         return original;
     }
 
     @Unique
-    boolean shouldUseLayerBuffer = true;
+    private boolean better_enchants$shouldUseLayerBuffer = true;
 
     @Unique
-    //It's my mod I can do what I want.
-    byte drawBeforeAfterCustom = 0;
-
-    @Override
-    public RenderSetup enchantOutline$getRenderSetup() {
-        return state;
-    }
+    private byte better_enchants$drawBeforeAfterCustom = 0;
 
     @Override
     public boolean enchantOutline$shouldUseLayerBuffer() {
-        return shouldUseLayerBuffer;
+        return better_enchants$shouldUseLayerBuffer;
     }
 
     @Override
     public void enchantOutline$setShouldUseLayerBuffer(boolean newUseLayerBuffer) {
-        shouldUseLayerBuffer = newUseLayerBuffer;
+        better_enchants$shouldUseLayerBuffer = newUseLayerBuffer;
     }
 
     @Override
     public boolean enchantOutline$shouldDrawBeforeCustom() {
-        return drawBeforeAfterCustom == -1;
+        return better_enchants$drawBeforeAfterCustom == -1;
     }
 
     @Override
     public boolean enchantOutline$shouldDrawAfterCustom() {
-        return drawBeforeAfterCustom == 1;
+        return better_enchants$drawBeforeAfterCustom == 1;
     }
 
     @Override
     public void enchantOutline$setDrawBeforeCustom(boolean drawBeforeCustom) {
-        if(drawBeforeCustom){
-            this.drawBeforeAfterCustom = -1;
+        if (drawBeforeCustom) {
+            this.better_enchants$drawBeforeAfterCustom = -1;
             return;
         }
-        this.drawBeforeAfterCustom = 0;
-    }
-
-    @Override
-    public void enchantOutline$setDrawAfterCustom(boolean drawAfterCustom) {
-        if(drawAfterCustom){
-            this.drawBeforeAfterCustom = 1;
-            return;
-        }
-        this.drawBeforeAfterCustom = 0;
+        this.better_enchants$drawBeforeAfterCustom = 0;
     }
 }

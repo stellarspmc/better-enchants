@@ -1,13 +1,10 @@
 package net.enchantoutline.util;
 
-import net.enchantoutline.mixin_accessors.ModelPartAccessor;
-import net.enchantoutline.mixin_accessors.ModelPart_CubeAccessor;
 import net.enchantoutline.model.HijackedModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Direction;
 import org.joml.Vector3f;
 
@@ -17,8 +14,8 @@ import java.util.function.Function;
 public class ModelHelper {
     public static final ThreadLocal<Boolean> FLIP_CUBOIDS = ThreadLocal.withInitial(() -> false);
 
-    public static HijackedModel getThickenedModel(Model original, Function<Identifier, RenderType> layerFactory, float scale){
-        ModelPart root = original.root();
+    // CHANGED: 1.21.1 Models do not natively store a root() part. We must pass the root in directly.
+    public static HijackedModel getThickenedModel(ModelPart root, Function<ResourceLocation, RenderType> layerFactory, float scale){
         ModelPart thickenedRoot = thickenedModelPart(root, scale);
 
         return new HijackedModel(thickenedRoot, layerFactory);
@@ -30,41 +27,31 @@ public class ModelHelper {
     }
 
     //get thick
-    private static ModelPart thickenedModelPartInternal(ModelPart original, float scale){
+    private static ModelPart thickenedModelPartInternal(ModelPart original, float scale) {
+        ModelPartAccessor accessor = (ModelPartAccessor) (Object) original;
 
-        ModelPartAccessor modelPartAccessor = (ModelPartAccessor)(Object)original;
-        List<ModelPart.Cube> cuboids = modelPartAccessor.enchantOutline$getCuboids();
-
-        List<ModelPart.Cube> thickCuboids = new ArrayList<>();
-        for(var cuboid: cuboids){
-            ModelPart_CubeAccessor accessor = ((ModelPart_CubeAccessor)cuboid);
-            for(Direction dir : accessor.enchantOutline$getDirections()){
-                thickCuboids.addAll(thickenCuboidFace(cuboid, dir, scale/*, stack*/));
+        // 1. Process current cuboids
+        List<ModelPart.Cube> newCuboids = new ArrayList<>();
+        for (var cube : accessor.enchantOutline$getCuboids()) {
+            ModelPart_CubeAccessor cubeAccessor = (ModelPart_CubeAccessor) cube;
+            for (Direction dir : cubeAccessor.enchantOutline$getDirections()) {
+                newCuboids.addAll(thickenCuboidFace(cube, dir, scale));
             }
         }
 
-        Map<String, ModelPart> oldChildren = modelPartAccessor.enchantOutline$getChildren();
-        Map<String, ModelPart> newChildren = new HashMap<>(oldChildren.size()+1);
+        // 2. Build the new ModelPart with the thickened cuboids
+        ModelPart newPart = new ModelPart(newCuboids, Map.of());
+        newPart.loadPose(original.storePose());
+        newPart.setInitialPose(original.getInitialPose());
 
-        //Vector3f posOffset = new Vector3f(0,0,0);
-        //posOffset = VertexHelper.transformVector(stack, posOffset);
-
-        ModelPart undoTransformModelPart = new ModelPart(thickCuboids, Map.of());
-        //undoTransformModelPart.setOrigin(posOffset.x(),posOffset.y(),posOffset.z());
-        PartPose transform = new PartPose(original.x, original.y, original.z, original.xRot, original.yRot, original.zRot, original.xScale, original.yScale, original.zScale);
-        undoTransformModelPart.loadPose(transform);
-        newChildren.put("EnchantOutline", undoTransformModelPart);
-
-        for(var set :oldChildren.entrySet()){
-            newChildren.put(set.getKey(), thickenedModelPartInternal(set.getValue(), scale));
+        // 3. Recursively process children
+        Map<String, ModelPart> oldChildren = accessor.enchantOutline$getChildren();
+        for (var entry : oldChildren.entrySet()) {
+            // Use setChild to correctly link the hierarchy
+            newPart.setChild(entry.getKey(), thickenedModelPartInternal(entry.getValue(), scale));
         }
 
-        ModelPart thickModelPart = new ModelPart(List.of(), newChildren);
-        thickModelPart.setInitialPose(original.getInitialPose());
-        PartPose trans = thickModelPart.storePose();
-        thickModelPart.loadPose(trans);
-
-        return thickModelPart;
+        return newPart;
     }
 
     private static List<ModelPart.Cube> thickenCuboidFace(ModelPart.Cube original, Direction dir, float scale/*, PoseStack stack*/){
@@ -85,13 +72,11 @@ public class ModelHelper {
         float z = original.minZ;
 
         Vector3f startPos = new Vector3f(x, y, z);
-        //startPos = VertexHelper.transformVector(stack, startPos);
 
         float sizeX = original.maxX - x;
         float sizeY = original.maxY - y;
         float sizeZ = original.maxZ - z;
 
-        //TODO: use these to calculate a new scale so things have a consistent outline size
         float extraX = accessor.enchantOutline$getExtraX();
         float extraY = accessor.enchantOutline$getExtraY();
         float extraZ = accessor.enchantOutline$getExtraZ();
@@ -138,14 +123,10 @@ public class ModelHelper {
             verts = new Vector3f[]{vertex5, vertex6, vertex7, vertex8};
         }
 
-        //EnchantmentGlintOutline.LOGGER.info("scale1: {}", scale);
-        //scale = (scale * (extraX*2 + sizeX)/sizeX);
-        //EnchantmentGlintOutline.LOGGER.info("scale2: {}", scale);
         Vector3f[] cardinalDirs = VertexHelper.getFaceCardinalDirs(verts, scale);
         if(cardinalDirs != null) {
             for (Vector3f cardDir : cardinalDirs) {
                 Vector3f movedPos = VertexHelper.growVert(startPos, cardDir, normal);
-                //movedPos.sub(startPos).mul(1/((extraX + sizeX)/sizeX), 1/((extraY + sizeY)/sizeY), 1/((extraZ + sizeZ)/sizeZ)).add(startPos);
                 ModelHelper.FLIP_CUBOIDS.set(true);
                 thickenedCuboids.add(new ModelPart.Cube(u, v, movedPos.x(), movedPos.y(), movedPos.z(), sizeX, sizeY, sizeZ, extraX, extraY, extraZ, mirror, accessor.enchantOutline$getTextureWidth(), accessor.enchantOutline$getTextureHeight(), Set.of(dir)));
                 ModelHelper.FLIP_CUBOIDS.set(false);

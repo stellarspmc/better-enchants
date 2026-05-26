@@ -1,8 +1,8 @@
 package net.enchantoutline.config;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 
 public class ItemOverrideContainer {
     private String item;
@@ -32,7 +32,7 @@ public class ItemOverrideContainer {
     }
 
     public Item getItem(){
-        return BuiltInRegistries.ITEM.getValue(Identifier.parse(item));
+        return BuiltInRegistries.ITEM.get(ResourceLocation.parse(item));
     }
 
     public ItemOverride getItemOverride(){

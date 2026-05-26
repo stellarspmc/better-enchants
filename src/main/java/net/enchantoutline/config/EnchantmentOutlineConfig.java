@@ -2,9 +2,9 @@ package net.enchantoutline.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.enchantoutline.EnchantmentGlintOutline;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.ARGB;
+import net.enchantoutline.EnchantmentGlintOutlineFabricOld;
+import net.minecraft.util.FastColor;
+import net.neoforged.fml.loading.FMLConfig;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -23,7 +23,7 @@ import java.util.concurrent.CompletionException;
  * Taken from webspeak
  */
 public class EnchantmentOutlineConfig {
-    public static final Path CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("enchantment-glint-outline.json");
+    public static final Path CONFIG_FILE = Path.of(FMLConfig.defaultConfigPath());
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static final float MAX_OUTLINE_SIZE = 30;
@@ -84,11 +84,11 @@ public class EnchantmentOutlineConfig {
 
     public void setBaseSolidOutlineColorAsInt(int color)
     {
-        color = ARGB.color(255, color);
+        color = FastColor.ARGB32.color(255, color);
         int[] newOutlineColor = new int[3];
-        newOutlineColor[0] = ARGB.red(color);
-        newOutlineColor[1] = ARGB.green(color);
-        newOutlineColor[2] = ARGB.blue(color);
+        newOutlineColor[0] = FastColor.ARGB32.red(color);
+        newOutlineColor[1] = FastColor.ARGB32.green(color);
+        newOutlineColor[2] = FastColor.ARGB32.blue(color);
         render_solid_outline_color_rgb = newOutlineColor;
     }
 
@@ -97,7 +97,7 @@ public class EnchantmentOutlineConfig {
         if(outlineColorInt.length < 3){
             return -1;
         }
-        return ARGB.color(255,ARGB.color((outlineColorInt[0]), (outlineColorInt[1]), (outlineColorInt[2])));
+        return FastColor.ARGB32.color(255,FastColor.ARGB32.color((outlineColorInt[0]), (outlineColorInt[1]), (outlineColorInt[2])));
     }
 
     public void setRenderArmor(boolean renderArmor){
@@ -242,7 +242,7 @@ public class EnchantmentOutlineConfig {
             try(BufferedWriter writer = Files.newBufferedWriter(CONFIG_FILE)) {
                 writer.write(toJson());
             } catch (Exception e) {
-                EnchantmentGlintOutline.LOGGER.error("Error saving Enchant Glint Outline config.", e);
+                EnchantmentGlintOutlineFabricOld.LOGGER.error("Error saving Enchant Glint Outline config.", e);
                 throw new CompletionException(e);
             }
         });

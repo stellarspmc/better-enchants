@@ -1,25 +1,14 @@
 {
 	"required": true,
 	"package": "net.enchantoutline.mixin",
-	"compatibilityLevel": "JAVA_25",
+	"compatibilityLevel": "JAVA_21",
 	"plugin": "net.enchantoutline.EnchantOutlineMixinPlugin",
 	"mixins": [
-		"ItemRenderState_LayerRenderStateMixin",
 		"BufferBuilderStorageMixin",
+		"EquipmentRendererMixin",
 		"MultiBufferSource_BufferSourceMixin",
 		"RenderLayerMixin",
-		"ModelPart_CubeMixin",
-		"ModelPartMixin",
-		"OrderedRenderCommandQueueImplMixin",
-		"RenderPipelineMixin",
-		"ItemModelManagerMixin",
-		"ItemRenderStateMixin",
 		"TridentEntityRendererMixin",
-		"RenderSetupAccessor",
-		"EquipmentRendererMixin",
-		"TextureAtlasSpriteMixin",
-		"LevelRendererMixin",
-
 		"sodium.ModelCuboidMixin"
 	],
 	"injectors": {
@@ -27,5 +16,8 @@
 	},
 	"overwrites": {
 		"requireAnnotations": true
-	}
+	},
+	"client": [
+		"ItemRendererMixin"
+	]
 }
