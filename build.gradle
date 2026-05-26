@@ -58,9 +58,6 @@ repositories {
 dependencies {
 	implementation "net.neoforged:neoforge:${project.neoforge_version}"
 
-	compileOnly "dev.isxander:yet-another-config-lib:${project.yacl_version}"
-	runtimeOnly "dev.isxander:yet-another-config-lib:${project.yacl_version}"
-
 	//compileOnly "maven.modrinth:sodium:${project.sodium_version}"
 	//runtimeOnly "maven.modrinth:sodium:${project.sodium_version}"
 }
