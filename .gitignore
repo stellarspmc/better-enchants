@@ -4,10 +4,7 @@
 build/
 out/
 classes/
-
-# eclipse
-
-*.launch
+run/
 
 # idea
 
@@ -15,22 +12,6 @@ classes/
 *.iml
 *.ipr
 *.iws
-
-# vscode
-
-.settings/
-.vscode/
-bin/
-.classpath
-.project
-
-# macos
-
-*.DS_Store
-
-# fabric
-
-run/
 
 # java
 
