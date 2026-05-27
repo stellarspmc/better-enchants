@@ -1,6 +1,7 @@
 # Enchant Outline ( for 1.21.1 NeoForge )
 
 > Unofficial NeoForge port for 1.21.1
+
 > Because I wanted it
 
 ## Special Thanks
@@ -16,5 +17,5 @@ I'm not writing one, go read it yourself
 - [x] 1.21.1 NeoForge
 - [x] Item rendering ( Shader + Mixin )
 - [ ] Armor rendering
-- [ ] Trident rendering
-- [ ] Proper tests ( sodium compat unknown / performance? / all items )
+- [ ] Trident / Shield rendering
+- [ ] Proper tests ( mod support? / performance? )
