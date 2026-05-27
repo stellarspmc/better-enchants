@@ -22,7 +22,7 @@ public class Shaders {
     public static RenderType getOutlineLayer() {
         if (cachedOutlineLayer == null) {
             cachedOutlineLayer = RenderType.create(
-                    "enchout_outline",
+                    "enchant_outline",
                     DefaultVertexFormat.NEW_ENTITY,
                     VertexFormat.Mode.QUADS,
                     1536,

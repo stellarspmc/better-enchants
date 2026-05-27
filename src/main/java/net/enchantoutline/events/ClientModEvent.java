@@ -17,13 +17,7 @@ public class ClientModEvent {
     public static void onRegisterShaders(RegisterShadersEvent event) {
         try {
             ResourceLocation shaderLocation = ResourceLocation.fromNamespaceAndPath(EnchantmentGlintOutline.MOD_ID, "outline");
-            event.registerShader(
-                    new ShaderInstance(event.getResourceProvider(), shaderLocation, DefaultVertexFormat.BLOCK),
-                    shaderInstance -> {
-                        Shaders.outlineShaderInstance = shaderInstance;
-                        EnchantmentGlintOutline.LOGGER.info("Shader successfully loaded: {}", Shaders.outlineShaderInstance != null);
-                    }
-            );
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), shaderLocation, DefaultVertexFormat.BLOCK), shaderInstance -> Shaders.outlineShaderInstance = shaderInstance);
         } catch (Exception e) {
             EnchantmentGlintOutline.LOGGER.error("Failed to load outline shader!", e);
         }
