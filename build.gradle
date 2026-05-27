@@ -14,10 +14,6 @@ base {
 neoForge {
 	version = project.neoforge_version
 
-	accessTransformers {
-		file('src/main/resources/META-INF/accesstransformer.cfg')
-	}
-
 	runs {
 		client {
 			client()
@@ -36,30 +32,10 @@ neoForge {
 
 repositories {
 	mavenCentral()
-
-	maven {
-		name 'Xander Maven'
-		url 'https://maven.isxander.dev/releases'
-	}
-
-	exclusiveContent {
-		forRepository {
-			maven {
-				name = "Modrinth"
-				url = "https://api.modrinth.com/maven"
-			}
-		}
-		filter {
-			includeGroup "maven.modrinth"
-		}
-	}
 }
 
 dependencies {
 	implementation "net.neoforged:neoforge:${project.neoforge_version}"
-
-	//compileOnly "maven.modrinth:sodium:${project.sodium_version}"
-	//runtimeOnly "maven.modrinth:sodium:${project.sodium_version}"
 }
 
 processResources {
@@ -83,16 +59,5 @@ jar {
 	inputs.property "archivesName", project.base.archivesName
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties.archivesName}"}
-	}
-}
-
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
-			from components.java
-		}
-	}
-	repositories {
 	}
 }
