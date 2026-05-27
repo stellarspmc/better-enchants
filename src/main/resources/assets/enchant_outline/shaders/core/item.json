@@ -1,14 +1,14 @@
 {
     "blend": {
         "func": "add",
-        "srcrgb": "src_alpha",
-        "dstrgb": "one_minus_src_alpha",
+        "srcrgb": "srcalpha",
+        "dstrgb": "1-srcalpha",
         "funcalpha": "add",
         "srcalpha": "one",
         "dstalpha": "zero"
     },
-    "vertex": "enchant_outline:outline",
-    "fragment": "enchant_outline:outline",
+    "vertex": "enchant_outline:item",
+    "fragment": "enchant_outline:item",
     "attributes": [
         "Position",
         "Color",

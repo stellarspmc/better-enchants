@@ -1,15 +1,17 @@
 {
-	"required": true,
-	"package": "net.enchantoutline.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
-	},
-	"client": [
-		"HumanoidArmorLayerMixin",
-		"ItemRendererMixin"
-	]
+  "required": true,
+  "package": "net.enchantoutline.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "client": [
+    "BlockEntityWithoutLevelRendererMixin",
+    "HumanoidArmorLayerMixin",
+    "ItemRendererMixin",
+    "ThrownTridentRendererMixin"
+  ]
 }

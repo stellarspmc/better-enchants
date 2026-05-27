@@ -15,10 +15,14 @@ public class ShaderRegistry {
     @SubscribeEvent
     public static void onRegisterShaders(RegisterShadersEvent event) {
         try {
-            ResourceLocation shaderLocation = ResourceLocation.fromNamespaceAndPath(EnchantmentGlintOutline.MOD_ID, "outline");
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), shaderLocation, DefaultVertexFormat.BLOCK), shaderInstance -> Shaders.outlineShaderInstance = shaderInstance);
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), location("item"), DefaultVertexFormat.BLOCK), shaderInstance -> Shaders.itemShaderInstance = shaderInstance);
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), location("armor"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> Shaders.armorShaderInstance = shaderInstance);
         } catch (Exception e) {
-            EnchantmentGlintOutline.LOGGER.error("Failed to load outline shader!", e);
+            EnchantmentGlintOutline.LOGGER.error("Failed to load shader(s)!", e);
         }
+    }
+
+    private static ResourceLocation location(String id) {
+        return ResourceLocation.fromNamespaceAndPath(EnchantmentGlintOutline.MOD_ID, id);
     }
 }

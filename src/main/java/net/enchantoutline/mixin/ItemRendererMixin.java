@@ -21,11 +21,11 @@ public abstract class ItemRendererMixin {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void addOutlinePass(ItemStack stack, ItemDisplayContext ctx, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, BakedModel model, CallbackInfo ci) {
-        if (!stack.isEnchanted()) return;
+        if (!stack.hasFoil()) return;
         if (ctx == ItemDisplayContext.GUI) return;
 
         ItemRenderer self = (ItemRenderer) (Object) this;
-        VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getOutlineLayer());
+        VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getItemOutlineLayer());
         float thickness = 0.025f;
 
         float[][] offsets = {
@@ -35,12 +35,10 @@ public abstract class ItemRendererMixin {
 
         for (float[] offset : offsets) {
             poseStack.pushPose();
-
             model.applyTransform(ctx, poseStack, leftHand);
             poseStack.translate(-0.5f, -0.5f, -0.5f);
             poseStack.translate(offset[0], offset[1], 0.0f);
             self.renderModelLists(model, stack, light, overlay, poseStack, outlineBuffer);
-
             poseStack.popPose();
         }
     }

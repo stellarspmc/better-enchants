@@ -22,13 +22,11 @@ public class HumanoidArmorLayerMixin {
     @Inject(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V", at = @At("HEAD"))
     private void addArmorOutlinePass(PoseStack poseStack, MultiBufferSource bufferSource, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<?> model, CallbackInfo ci) {
         net.minecraft.world.item.ItemStack armorStack = entity.getItemBySlot(slot);
-        if (armorStack.isEmpty() || !armorStack.isEnchanted()) return;
+        if (armorStack.isEmpty() || !armorStack.hasFoil()) return;
 
-        VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getOutlineLayer());
+        VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer());
         poseStack.pushPose();
-
-        float scale = 1.05f;
-        poseStack.scale(scale, scale, scale);
+        poseStack.scale(1.05F, 1.05F, 1.05F);
         model.renderToBuffer(poseStack, outlineBuffer, light, net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }
