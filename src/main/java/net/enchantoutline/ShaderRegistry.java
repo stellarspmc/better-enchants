@@ -9,7 +9,7 @@ import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 
-@EventBusSubscriber(modid = EnchantmentGlintOutline.MOD_ID)
+@EventBusSubscriber(modid = GlintOutline.MOD_ID)
 public class ShaderRegistry {
 
     @SubscribeEvent
@@ -18,11 +18,11 @@ public class ShaderRegistry {
             event.registerShader(new ShaderInstance(event.getResourceProvider(), location("item"), DefaultVertexFormat.BLOCK), shaderInstance -> Shaders.itemShaderInstance = shaderInstance);
             event.registerShader(new ShaderInstance(event.getResourceProvider(), location("armor"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> Shaders.armorShaderInstance = shaderInstance);
         } catch (Exception e) {
-            EnchantmentGlintOutline.LOGGER.error("Failed to load shader(s)!", e);
+            GlintOutline.LOGGER.error("Failed to load shader(s)!", e);
         }
     }
 
     private static ResourceLocation location(String id) {
-        return ResourceLocation.fromNamespaceAndPath(EnchantmentGlintOutline.MOD_ID, id);
+        return ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, id);
     }
 }

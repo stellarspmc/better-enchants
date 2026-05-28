@@ -1,7 +1,8 @@
-#version 330
+#version 150
 
 uniform sampler2D Sampler0;
 uniform vec4 ColorModulator;
+uniform vec4 GlowColor;
 
 in vec2 texCoord0;
 in vec4 vertexColor;
@@ -9,11 +10,10 @@ in vec4 vertexColor;
 out vec4 fragColor;
 
 void main() {
-    vec4 glowColor = vec4(0.85, 0.70, 0.25, 1.00);
     vec4 textureColor = texture(Sampler0, texCoord0);
     if (textureColor.a < 0.1) {
         discard;
     }
 
-    fragColor = glowColor * ColorModulator;
+    fragColor = GlowColor * ColorModulator;
 }

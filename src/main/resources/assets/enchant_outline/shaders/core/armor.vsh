@@ -1,4 +1,4 @@
-#version 330
+#version 150
 
 in vec3 Position;
 in vec4 Color;
@@ -9,12 +9,22 @@ in vec3 Normal;
 
 uniform mat4 ModelViewMat;
 uniform mat4 ProjMat;
+uniform mat4 TextureMat;
+uniform float Thickness;
 
+out vec2 texCoord0;
+out vec2 texCoord2;
 out vec4 vertexColor;
 
 void main() {
-	vec3 normalizedNormal = normalize(Normal);
-	vec3 inflatedPosition = Position + (normalizedNormal * 0.045); // thickness
+	vec3 inflatedPosition = Position;
+
+	if (length(Normal) > 0.001) {
+		inflatedPosition += Normal * Thickness;
+	}
+
 	gl_Position = ProjMat * ModelViewMat * vec4(inflatedPosition, 1.0);
+	texCoord0 = (TextureMat * vec4(UV0, 0.0, 1.0)).xy;
+	texCoord2 = UV2;
 	vertexColor = Color;
 }
