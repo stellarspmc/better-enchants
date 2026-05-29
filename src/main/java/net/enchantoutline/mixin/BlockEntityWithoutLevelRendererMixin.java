@@ -33,15 +33,15 @@ public class BlockEntityWithoutLevelRendererMixin {
         if (!stack.hasFoil()) return;
 
         if (stack.is(Items.SHIELD)) {
-            VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(ModelBakery.NO_PATTERN_SHIELD.atlasLocation()));
-            poseStack.scale(1.1f, 1.1f, 1.1f);
+            VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getEntityOutlineLayer(ModelBakery.NO_PATTERN_SHIELD.atlasLocation()));
 
             shieldModel.renderToBuffer(poseStack, outlineBuffer, a, OverlayTexture.NO_OVERLAY);
         } if (stack.is(Items.TRIDENT)) {
-            VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(TridentModel.TEXTURE));
+            VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getEntityOutlineLayer(TridentModel.TEXTURE));
+            poseStack.pushPose();
             poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(180.0F));
             poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180.0F));
-            poseStack.scale(1.1f, 1.1f, 1.1f);
+            //poseStack.scale(1.1f, 1.1f, 1.1f);
 
             tridentModel.renderToBuffer(poseStack, outlineBuffer, a, OverlayTexture.NO_OVERLAY);
             poseStack.popPose();

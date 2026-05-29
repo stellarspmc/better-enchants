@@ -1,6 +1,8 @@
 package net.enchantoutline.mixin;
 
 import net.enchantoutline.Shaders;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -16,7 +18,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,11 +36,14 @@ public class HumanoidArmorLayerMixin {
         if (armorStack.isEmpty() || !armorStack.hasFoil() || armorStack.is(Items.ELYTRA)) return;
         if (armorStack.getItem() instanceof ArmorItem armoritem) {
             for (int layerIdx = 0; layerIdx < armoritem.getMaterial().value().layers().size(); layerIdx++) {
-                ArmorMaterial.Layer armormaterial$layer = armoritem.getMaterial().value().layers().get(layerIdx);
-                ResourceLocation test = ClientHooks.getArmorTexture(entity, armorStack, armormaterial$layer, usesInnerModel(slot), slot);
-                VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(test));
-                poseStack.scale(1.1f, 1.1f, 1.1f);
-                model.renderToBuffer(poseStack, outlineBuffer, light, OverlayTexture.NO_OVERLAY);
+                ResourceLocation test = ClientHooks.getArmorTexture(entity, armorStack, armoritem.getMaterial().value().layers().get(layerIdx), usesInnerModel(slot), slot);
+                //VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getEntityOutlineLayer(test));
+                //poseStack.scale(1.1f, 1.1f, 1.1f);
+                //model.renderToBuffer(poseStack, outlineBuffer, light, OverlayTexture.NO_OVERLAY);
+
+                VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.test(test));
+                var thickenedModel = ModelHelper.getThickenedModel(model, 0.05f);
+                thickenedModel.renderToBuffer(poseStack, outlineBuffer, light, OverlayTexture.NO_OVERLAY, 0xFFFF0000);
             }
         }
     }

@@ -1,15 +1,16 @@
 package net.enchantoutline;
 
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.inventory.InventoryMenu;
 import org.lwjgl.opengl.GL11;
 
@@ -19,22 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Shaders {
 
     public static ShaderInstance itemShaderInstance;
-    public static ShaderInstance armorShaderInstance;
+    public static ShaderInstance entityShaderInstance;
     private static RenderType itemLayer;
-    private static final Map<ResourceLocation, RenderType> armorLayerCache = new ConcurrentHashMap<>();
-
-    public static final RenderStateShard.CullStateShard CULL_FRONT = new RenderStateShard.CullStateShard(true) {
-        @Override
-        public void setupRenderState() {
-            RenderSystem.enableCull();
-            GL11.glCullFace(GL11.GL_FRONT); // Force front-face culling
-        }
-
-        @Override
-        public void clearRenderState() {
-            GL11.glCullFace(GL11.GL_BACK);  // Reset back to normal back-face culling
-        }
-    };
+    private static final Map<ResourceLocation, RenderType> entityLayerCache = new ConcurrentHashMap<>();
+    private static final Map<ResourceLocation, RenderType> testCache = new ConcurrentHashMap<>();
 
     public static RenderType getItemOutlineLayer() {
         if (itemLayer == null) itemLayer = RenderType.create(
@@ -60,8 +49,8 @@ public class Shaders {
         return itemLayer;
     }
 
-    public static RenderType getArmorOutlineLayer(ResourceLocation location) {
-        return armorLayerCache.computeIfAbsent(location, texture -> RenderType.create(
+    public static RenderType getEntityOutlineLayer(ResourceLocation location) {
+        return entityLayerCache.computeIfAbsent(location, texture -> RenderType.create(
                 "armor",
                 DefaultVertexFormat.NEW_ENTITY,
                 VertexFormat.Mode.QUADS,
@@ -69,13 +58,34 @@ public class Shaders {
                 false,
                 true,
                 RenderType.CompositeState.builder()
-                        .setShaderState(new RenderStateShard.ShaderStateShard(() -> armorShaderInstance))
+                        .setShaderState(new RenderStateShard.ShaderStateShard(() -> entityShaderInstance))
                         .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
                         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                         .setLightmapState(RenderStateShard.LIGHTMAP)
                         .setOverlayState(RenderStateShard.OVERLAY)
                         .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                        .setCullState(CULL_FRONT)
+                        .setCullState(RenderStateShard.NO_CULL)
+                        .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                        .createCompositeState(false)
+        ));
+    }
+
+    public static RenderType test(ResourceLocation location) {
+        return testCache.computeIfAbsent(location, texture -> RenderType.create(
+                "test",
+                DefaultVertexFormat.NEW_ENTITY,
+                VertexFormat.Mode.QUADS,
+                1536,
+                false,
+                false,
+                RenderType.CompositeState.builder()
+                        .setShaderState(RenderStateShard.RENDERTYPE_ENTITY_SOLID_SHADER)
+                        .setTextureState(new RenderStateShard.TextureStateShard(location, false, false))
+                        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                        .setLightmapState(RenderStateShard.LIGHTMAP)
+                        .setOverlayState(RenderStateShard.OVERLAY)
+                        .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST) // Test depth (don't show through walls)
+                        .setCullState(RenderStateShard.NO_CULL)
                         .setWriteMaskState(RenderStateShard.COLOR_WRITE)
                         .createCompositeState(false)
         ));

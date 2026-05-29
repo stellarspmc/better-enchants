@@ -7,8 +7,8 @@
         "srcalpha": "one",
         "dstalpha": "zero"
     },
-    "vertex": "enchant_outline:armor",
-    "fragment": "enchant_outline:armor",
+    "vertex": "enchant_outline:entity",
+    "fragment": "enchant_outline:entity",
     "attributes": [
         "Position",
         "Color",

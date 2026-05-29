@@ -15,5 +15,10 @@ void main() {
         discard;
     }
 
-    fragColor = GlowColor * ColorModulator;
+    if (gl_FrontFacing) {
+        discard;
+    }
+
+    fragColor = GlowColor * ColorModulator; // no lightmap
+    //fragColor = GlowColor * ColorModulator * vertexColor; // with lightmap (test)
 }

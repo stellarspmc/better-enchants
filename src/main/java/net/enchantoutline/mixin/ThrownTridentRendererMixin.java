@@ -2,11 +2,9 @@ package net.enchantoutline.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.enchantoutline.GlintOutline;
 import net.enchantoutline.Shaders;
 import net.minecraft.client.model.TridentModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.client.renderer.entity.ThrownTridentRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.projectile.ThrownTrident;
@@ -36,7 +34,7 @@ public class ThrownTridentRendererMixin {
         poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(pitch + 90.0F));
         poseStack.scale(1.1f, 1.1f, 1.1f);
 
-        VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(TridentModel.TEXTURE));
+        VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getEntityOutlineLayer(TridentModel.TEXTURE));
         model.renderToBuffer(poseStack, outlineBuffer, light, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }

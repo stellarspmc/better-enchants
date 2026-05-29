@@ -16,7 +16,7 @@ public class ShaderRegistry {
     public static void onRegisterShaders(RegisterShadersEvent event) {
         try {
             event.registerShader(new ShaderInstance(event.getResourceProvider(), location("item"), DefaultVertexFormat.BLOCK), shaderInstance -> Shaders.itemShaderInstance = shaderInstance);
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), location("armor"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> Shaders.armorShaderInstance = shaderInstance);
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), location("entity"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> Shaders.entityShaderInstance = shaderInstance);
         } catch (Exception e) {
             GlintOutline.LOGGER.error("Failed to load shader(s)!", e);
         }

@@ -20,10 +20,16 @@ void main() {
 	vec3 inflatedPosition = Position;
 
 	if (length(Normal) > 0.001) {
-		inflatedPosition += Normal * Thickness;
+		inflatedPosition += normalize(Normal) * Thickness;
 	}
 
-	gl_Position = ProjMat * ModelViewMat * vec4(inflatedPosition, 1.0);
+	vec4 clipPos = ProjMat * ModelViewMat * vec4(Position, 1.0);
+	vec4 clipNormal = ProjMat * ModelViewMat * vec4(Normal, 0.0);
+	clipPos.xy += normalize(clipNormal.xy) * Thickness * clipPos.w;
+
+	gl_Position = clipPos; // ?
+
+	//gl_Position = ProjMat * ModelViewMat * vec4(inflatedPosition, 1.0);
 	texCoord0 = (TextureMat * vec4(UV0, 0.0, 1.0)).xy;
 	texCoord2 = UV2;
 	vertexColor = Color;

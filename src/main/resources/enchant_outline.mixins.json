@@ -10,6 +10,8 @@
   },
   "client": [
     "BlockEntityWithoutLevelRendererMixin",
+    "CustomHeadLayerMixin",
+    "ElytraLayerMixin",
     "HumanoidArmorLayerMixin",
     "ItemRendererMixin",
     "ThrownTridentRendererMixin"
