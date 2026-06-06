@@ -33,17 +33,23 @@ public class BlockEntityWithoutLevelRendererMixin {
         ModelPart rootPart = null;
 
         if (stack.is(Items.SHIELD)) {
-            consumer = bufferSource.getBuffer(Shaders.getTest());
+            consumer = bufferSource.getBuffer(Shaders.getModelOutlineLayer());
             rootPart = this.shieldModel.root;
+            poseStack.pushPose();
+            poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(180.0F));
         } else if (stack.is(Items.TRIDENT)) {
-            consumer = bufferSource.getBuffer(Shaders.getTest());
+            consumer = bufferSource.getBuffer(Shaders.getModelOutlineLayer());
             rootPart = this.tridentModel.root;
+            poseStack.pushPose();
+            poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(180.0F));
+            poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180.0F));
         }
 
         if (consumer != null) {
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
             rootPart.render(poseStack, consumer, a, b);
             GlintOutline.IS_RENDERING_OUTLINE.remove();
+            poseStack.popPose();
         }
     }
 

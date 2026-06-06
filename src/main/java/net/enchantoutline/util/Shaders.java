@@ -44,10 +44,10 @@ public class Shaders {
         return itemLayer;
     }
 
-    public static ShaderInstance testInstance;
-    private static RenderType test;
-    public static RenderType getTest() {
-        if (test == null) test = RenderType.create(
+    public static ShaderInstance modelInstance;
+    private static RenderType modelLayer;
+    public static RenderType getModelOutlineLayer() {
+        if (modelLayer == null) modelLayer = RenderType.create(
                 "model",
                 DefaultVertexFormat.NEW_ENTITY,
                 VertexFormat.Mode.QUADS,
@@ -55,7 +55,7 @@ public class Shaders {
                 true, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(new RenderStateShard.ShaderStateShard(() -> {
-                            if (testInstance != null) return testInstance;
+                            if (modelInstance != null) return modelInstance;
                             return GameRenderer.getPositionTexShader();
                         }))
                         .setWriteMaskState(RenderStateShard.COLOR_WRITE)
@@ -66,27 +66,16 @@ public class Shaders {
                         .createCompositeState(true)
         );
 
-        return test;
+        return modelLayer;
     }
 
     @SubscribeEvent
     public static void onRegisterShaders(RegisterShadersEvent event) {
         try {
-            event.registerShader(new ShaderInstance(
-                    event.getResourceProvider(),
-                    ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "item"),
-                    DefaultVertexFormat.BLOCK),
-                    shaderInstance -> itemShaderInstance = shaderInstance
-            );
-
-            event.registerShader(new ShaderInstance(
-                            event.getResourceProvider(),
-                            ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "model"),
-                            DefaultVertexFormat.NEW_ENTITY),
-                    shaderInstance -> testInstance = shaderInstance
-            );
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "item"), DefaultVertexFormat.BLOCK), shaderInstance -> itemShaderInstance = shaderInstance);
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "model"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> modelInstance = shaderInstance);
         } catch (Exception e) {
-            GlintOutline.LOGGER.error("Failed to load shader!", e);
+            GlintOutline.LOGGER.error("Failed to load shaders!", e);
         }
     }
 }

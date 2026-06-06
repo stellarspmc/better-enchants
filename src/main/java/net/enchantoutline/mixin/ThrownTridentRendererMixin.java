@@ -26,7 +26,7 @@ public class ThrownTridentRendererMixin {
     private void better_enchants$addOutlinePass(ThrownTrident trident, float test1, float test2, PoseStack poseStack, MultiBufferSource bufferSource, int light, CallbackInfo ci) {
         if (!trident.isFoil()) return;
 
-        VertexConsumer consumer = bufferSource.getBuffer(Shaders.getTest());
+        VertexConsumer consumer = bufferSource.getBuffer(Shaders.getModelOutlineLayer());
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(test2, trident.yRotO, trident.getYRot()) - 90f));
