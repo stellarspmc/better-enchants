@@ -16,7 +16,7 @@ Probably not working for any armor / shield / trident that doesn't extend classe
 
 - [x] 1.21.1 NeoForge
 - [x] Item rendering ( Shader + Mixin )
-- [ ] Armor rendering
+- [ ] Armor rendering ( Probably won't )
 - [ ] Trident / Shield rendering
 - [ ] Proper tests ( mod support? / performance? )
 - [ ] Config

@@ -28,10 +28,3 @@ type = "required"
 versionRange = "[1.21.1]"
 ordering = "NONE"
 side = "BOTH"
-
-[[dependencies.enchant_outline]]
-modId = "yacl"
-type = "optional"
-versionRange = "[3.0,)"
-ordering = "NONE"
-side = "BOTH"
