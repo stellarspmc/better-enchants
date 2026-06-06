@@ -11,9 +11,6 @@ out vec4 fragColor;
 
 void main() {
     vec4 textureColor = texture(Sampler0, texCoord0);
-    if (textureColor.a < 0.1) {
-        discard;
-    }
-
+    if (textureColor.a < 0.1) discard;
     fragColor = GlowColor * ColorModulator;
 }

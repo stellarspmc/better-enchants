@@ -23,8 +23,8 @@ public class ModelPartCubeMixin {
     private ModelPart.Polygon[] polygons;
 
     @Inject(method = "compile", at = @At("HEAD"), cancellable = true)
-    public void better_enchants$outline_magic(PoseStack.Pose pose, VertexConsumer consumer, int p_171335_, int p_171336_, int p_350744_, CallbackInfo ci) {
-        if (Boolean.TRUE.equals(GlintOutline.IS_RENDERING_OUTLINE.get())) {
+    public void better_enchants$outlineMagic(PoseStack.Pose pose, VertexConsumer consumer, int p_171335_, int p_171336_, int p_350744_, CallbackInfo ci) {
+        if (GlintOutline.IS_RENDERING_OUTLINE.get()) {
             float scale = 0.025f; // consistency!!!!!!!!
             float[] outlineColor = {.85f, .7f, .25f, 1f};
             for(var quad : polygons) {
@@ -41,11 +41,24 @@ public class ModelPartCubeMixin {
                     for (Vector3f dir : cardinalDirs) {
                         Vector3f[] vertPoses = VertexHelper.growFace(defaultVerts, dir, faceVec);
 
-                        int[] vertexData = new int[vertPoses.length*8];
+                        int[] vertexData = new int[vertPoses.length * 8];
                         for(int i = 0; i < vertPoses.length; i++) VertexHelper.packVertexData(vertexData, i, vertPoses[i], 0, 0);
 
                         BakedQuad enchantmentQuad = new BakedQuad(VertexHelper.flip(vertexData), -1, Direction.getNearest(quad.normal.x, quad.normal.y, quad.normal.z), null, false, true);
                         consumer.putBulkData(pose, enchantmentQuad, outlineColor[0], outlineColor[1], outlineColor[2], 1f, 0, 0); // I love the inconsistency about this
+                    }
+
+                    // im scared
+                    if(GlintOutline.IS_ARMOR.get()) {
+                        faceVec.mul(-1);
+                        for(Vector3f dir : cardinalDirs) {
+                            Vector3f[] vertPoses = VertexHelper.growFace(defaultVerts, dir, faceVec);
+
+                            int[] vertexData = new int[vertPoses.length * 8];
+                            for(int i = 0; i < vertPoses.length; i++) VertexHelper.packVertexData(vertexData, i, vertPoses[i], vertices[i].u, vertices[i].v);
+                            BakedQuad enchantmentQuad = new BakedQuad(vertexData, -1, Direction.getNearest(quad.normal.x, quad.normal.y, quad.normal.z), null, false, true);
+                            consumer.putBulkData(pose, enchantmentQuad, outlineColor[0], outlineColor[1], outlineColor[2], 1f, 0, 0);
+                        }
                     }
                 }
             }

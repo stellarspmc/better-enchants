@@ -14,6 +14,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 @EventBusSubscriber(modid = GlintOutline.MOD_ID)
 public class Shaders {
 
@@ -67,6 +70,29 @@ public class Shaders {
         );
 
         return modelLayer;
+    }
+
+    private static final Map<ResourceLocation, RenderType> armorLayerCache = new ConcurrentHashMap<>();
+    public static RenderType getArmorOutlineLayer(ResourceLocation location) {
+        return armorLayerCache.computeIfAbsent(location, texture -> RenderType.create(
+                "armor",
+                DefaultVertexFormat.NEW_ENTITY,
+                VertexFormat.Mode.QUADS,
+                786432,
+                true, false,
+                RenderType.CompositeState.builder()
+                        .setShaderState(new RenderStateShard.ShaderStateShard(() -> {
+                            if (modelInstance != null) return modelInstance;
+                            return GameRenderer.getPositionTexShader();
+                        }))
+                        .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+                        .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                        .setCullState(RenderStateShard.CULL)
+                        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                        .setOverlayState(RenderStateShard.NO_OVERLAY)
+                        .setLightmapState(RenderStateShard.NO_LIGHTMAP)
+                        .createCompositeState(true)
+        ));
     }
 
     @SubscribeEvent

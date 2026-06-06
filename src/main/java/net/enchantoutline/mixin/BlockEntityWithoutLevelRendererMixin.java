@@ -25,7 +25,7 @@ public class BlockEntityWithoutLevelRendererMixin {
     @Shadow private TridentModel tridentModel;
 
     @Inject(method = "renderByItem", at = @At("HEAD"))
-    private void better_enchants$renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack poseStack, MultiBufferSource bufferSource, int a, int b, CallbackInfo ci) {
+    private void better_enchants$addBlockEntityOutlinePass(ItemStack stack, ItemDisplayContext ctx, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, CallbackInfo ci) {
         if (ctx == ItemDisplayContext.GUI) return;
         if (!stack.hasFoil()) return;
 
@@ -47,7 +47,7 @@ public class BlockEntityWithoutLevelRendererMixin {
 
         if (consumer != null) {
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
-            rootPart.render(poseStack, consumer, a, b);
+            rootPart.render(poseStack, consumer, light, overlay);
             GlintOutline.IS_RENDERING_OUTLINE.remove();
             poseStack.popPose();
         }

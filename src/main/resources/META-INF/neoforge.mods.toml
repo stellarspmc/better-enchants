@@ -4,9 +4,9 @@ license = "CC0-1.0"
 
 [[mods]]
 modId = "enchant_outline"
-version = "3.2"
+version = "3.3"
 displayName = "Enchantment Glint Outline"
-displayURL = "https://github.com/Da0neDatGotAway/enchant-outline"
+displayURL = "https://github.com/stellarspmc/better-enchants"
 logoFile = "../assets/enchant_outline/icon.png"
 authors = "Da0neDatGotAway"
 credits = "Contributors: yo314159at, Igrium"

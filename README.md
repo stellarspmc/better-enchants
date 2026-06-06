@@ -4,7 +4,7 @@
 
 ## Special Thanks
 
-The original idea from the original repo, I just forked it and used another method.
+The original idea from the original repo, I just forked it and did some tinkers, so I won't claim credit
 
 ## About
 
@@ -16,7 +16,8 @@ Probably not working for any armor / shield / trident that doesn't extend classe
 
 - [x] 1.21.1 NeoForge
 - [x] Item rendering ( Shader + Mixin )
-- [ ] Armor rendering ( Probably won't )
-- [ ] Trident / Shield rendering
+- [ ] Armor rendering
+ - [ ] Elytra rendering
+- [x] Trident / Shield rendering
 - [ ] Proper tests ( mod support? / performance? )
 - [ ] Config
