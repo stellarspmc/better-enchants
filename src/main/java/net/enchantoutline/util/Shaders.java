@@ -48,7 +48,7 @@ public class Shaders {
     private static RenderType test;
     public static RenderType getTest() {
         if (test == null) test = RenderType.create(
-                "test",
+                "model",
                 DefaultVertexFormat.NEW_ENTITY,
                 VertexFormat.Mode.QUADS,
                 786432,
@@ -81,7 +81,7 @@ public class Shaders {
 
             event.registerShader(new ShaderInstance(
                             event.getResourceProvider(),
-                            ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "test2"),
+                            ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "model"),
                             DefaultVertexFormat.NEW_ENTITY),
                     shaderInstance -> testInstance = shaderInstance
             );
