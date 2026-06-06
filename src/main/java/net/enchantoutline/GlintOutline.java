@@ -11,5 +11,4 @@ public class GlintOutline {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final ThreadLocal<Boolean> IS_RENDERING_OUTLINE = ThreadLocal.withInitial(() -> false);
-    public static final ThreadLocal<Boolean> IS_ARMOR = ThreadLocal.withInitial(() -> false);
 }

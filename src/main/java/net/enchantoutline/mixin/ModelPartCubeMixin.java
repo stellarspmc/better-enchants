@@ -47,19 +47,6 @@ public class ModelPartCubeMixin {
                         BakedQuad enchantmentQuad = new BakedQuad(VertexHelper.flip(vertexData), -1, Direction.getNearest(quad.normal.x, quad.normal.y, quad.normal.z), null, false, true);
                         consumer.putBulkData(pose, enchantmentQuad, outlineColor[0], outlineColor[1], outlineColor[2], 1f, 0, 0); // I love the inconsistency about this
                     }
-
-                    // im scared
-                    if(GlintOutline.IS_ARMOR.get()) {
-                        faceVec.mul(-1);
-                        for(Vector3f dir : cardinalDirs) {
-                            Vector3f[] vertPoses = VertexHelper.growFace(defaultVerts, dir, faceVec);
-
-                            int[] vertexData = new int[vertPoses.length * 8];
-                            for(int i = 0; i < vertPoses.length; i++) VertexHelper.packVertexData(vertexData, i, vertPoses[i], vertices[i].u, vertices[i].v);
-                            BakedQuad enchantmentQuad = new BakedQuad(vertexData, -1, Direction.getNearest(quad.normal.x, quad.normal.y, quad.normal.z), null, false, true);
-                            consumer.putBulkData(pose, enchantmentQuad, outlineColor[0], outlineColor[1], outlineColor[2], 1f, 0, 0);
-                        }
-                    }
                 }
             }
             ci.cancel();

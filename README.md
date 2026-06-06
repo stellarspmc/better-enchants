@@ -8,16 +8,20 @@ The original idea from the original repo, I just forked it and did some tinkers,
 
 ## About
 
-I'm not writing one, go read it yourself
-
-Probably not working for any armor / shield / trident that doesn't extend classes (not sure)
+I'm not writing one, go read it yourself in the original mod [here](https://github.com/Da0neDatGotAway/better-enchants)
 
 ## Progress Map
 
 - [x] 1.21.1 NeoForge
-- [x] Item rendering ( Shader + Mixin )
+- [x] Item rendering
+- [x] Trident / Shield rendering
 - [ ] Armor rendering
  - [ ] Elytra rendering
-- [x] Trident / Shield rendering
-- [ ] Proper tests ( mod support? / performance? )
+- [ ] Proper tests
+ - [ ] Performance
+ - [ ] Mod Support: Sodium
+ - [ ] Mod Support: ImmediateFast
+ - [ ] Mod Support: Iris
+ - [ ] Mod Support: Everything else
 - [ ] Config
+ - [ ] YACL

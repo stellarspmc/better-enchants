@@ -72,6 +72,7 @@ public class Shaders {
         return modelLayer;
     }
 
+    public static ShaderInstance armorInstance;
     private static final Map<ResourceLocation, RenderType> armorLayerCache = new ConcurrentHashMap<>();
     public static RenderType getArmorOutlineLayer(ResourceLocation location) {
         return armorLayerCache.computeIfAbsent(location, texture -> RenderType.create(
@@ -82,7 +83,7 @@ public class Shaders {
                 true, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(new RenderStateShard.ShaderStateShard(() -> {
-                            if (modelInstance != null) return modelInstance;
+                            if (armorInstance != null) return armorInstance;
                             return GameRenderer.getPositionTexShader();
                         }))
                         .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
@@ -100,6 +101,7 @@ public class Shaders {
         try {
             event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "item"), DefaultVertexFormat.BLOCK), shaderInstance -> itemShaderInstance = shaderInstance);
             event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "model"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> modelInstance = shaderInstance);
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "armor"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> armorInstance = shaderInstance);
         } catch (Exception e) {
             GlintOutline.LOGGER.error("Failed to load shaders!", e);
         }

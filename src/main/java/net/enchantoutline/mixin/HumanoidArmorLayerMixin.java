@@ -28,9 +28,6 @@ public class HumanoidArmorLayerMixin {
         ItemStack armorStack = entity.getItemBySlot(slot);
         if (armorStack.isEmpty() || !armorStack.hasFoil() || armorStack.is(Items.ELYTRA)) return;
         if (armorStack.getItem() instanceof ArmorItem armoritem) {
-            //int outline = FastColor.ARGB32.colorFromFloat(1f, rgb[0], rgb[1], rgb[2]);
-
-            GlintOutline.IS_ARMOR.set(true);
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
 
             boolean isDyeable = armoritem.getMaterial().value().layers().size() > 1;
@@ -44,7 +41,6 @@ public class HumanoidArmorLayerMixin {
             }
 
             GlintOutline.IS_RENDERING_OUTLINE.remove();
-            GlintOutline.IS_ARMOR.remove();
         }
     }
 
