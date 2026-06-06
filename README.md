@@ -16,12 +16,12 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Item rendering
 - [x] Trident / Shield rendering
 - [ ] Armor rendering
- - [ ] Elytra rendering
+  - [ ] Elytra rendering
 - [ ] Proper tests
- - [ ] Performance
- - [ ] Mod Support: Sodium
- - [ ] Mod Support: ImmediateFast
- - [ ] Mod Support: Iris
- - [ ] Mod Support: Everything else
+  - [ ] Performance
+  - [ ] Mod Support: Sodium
+  - [ ] Mod Support: ImmediateFast
+  - [ ] Mod Support: Iris
+  - [ ] Mod Support: Everything else
 - [ ] Config
- - [ ] YACL
+  - [ ] YACL
