@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,6 +35,7 @@ public class ElytraLayerMixin {
 
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("TAIL"))
     public void enchant_outline$addTridentArmorOutlinePass(PoseStack poseStack, MultiBufferSource bufferSource, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
+        if (!entity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) return;
         ResourceLocation texture = getElytraTexture(entity.getItemBySlot(EquipmentSlot.CHEST), entity);
         if (entity instanceof AbstractClientPlayer player) {
             PlayerSkin skin = player.getSkin();
@@ -41,10 +43,18 @@ public class ElytraLayerMixin {
             else if (skin.capeTexture() != null && player.isModelPartShown(PlayerModelPart.CAPE)) texture = skin.capeTexture();
         }
 
-        GlintOutline.IS_RENDERING_OUTLINE.set(true);
+        //GlintOutline.IS_RENDERING_OUTLINE.set(true);
+        //VertexConsumer outlineConsumer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(texture));
+        //elytraModel.renderToBuffer(poseStack, outlineConsumer, light, OverlayTexture.NO_OVERLAY);
+        //GlintOutline.IS_RENDERING_OUTLINE.remove();
+
+        poseStack.pushPose();
+        poseStack.scale(1 + GlintOutline.SCALE, 1 + GlintOutline.SCALE, 1 + GlintOutline.SCALE);
+
         VertexConsumer outlineConsumer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(texture));
         elytraModel.renderToBuffer(poseStack, outlineConsumer, light, OverlayTexture.NO_OVERLAY);
-        GlintOutline.IS_RENDERING_OUTLINE.remove();
+
+        poseStack.popPose();
     }
 
 }

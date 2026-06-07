@@ -3,6 +3,7 @@ package net.enchantoutline.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.enchantoutline.GlintOutline;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -24,11 +25,10 @@ public abstract class ItemRendererMixin {
 
         ItemRenderer self = (ItemRenderer) (Object) this;
         VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getItemOutlineLayer());
-        float thickness = 0.025f;
 
         float[][] offsets = {
-                {thickness, 0.0f},  {-thickness, 0.0f},  {0.0f, thickness},  {0.0f, -thickness},
-                {thickness, thickness}, {thickness, -thickness}, {-thickness, thickness}, {-thickness, -thickness}
+                {GlintOutline.SCALE, 0.0f},  {-GlintOutline.SCALE, 0.0f},  {0.0f, GlintOutline.SCALE},  {0.0f, -GlintOutline.SCALE},
+                {GlintOutline.SCALE, GlintOutline.SCALE}, {GlintOutline.SCALE, -GlintOutline.SCALE}, {-GlintOutline.SCALE, GlintOutline.SCALE}, {-GlintOutline.SCALE, -GlintOutline.SCALE}
         };
 
         for (float[] offset : offsets) {

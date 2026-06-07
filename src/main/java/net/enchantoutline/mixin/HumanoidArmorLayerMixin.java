@@ -37,7 +37,10 @@ public class HumanoidArmorLayerMixin {
                 ResourceLocation texture = layer.texture(isDyeable && layerIdx == 0);
 
                 VertexConsumer outlineConsumer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(texture));
+
+                if (slot == EquipmentSlot.LEGS) GlintOutline.IS_RENDERING_LEGGINGS.set(true);
                 model.renderToBuffer(poseStack, outlineConsumer, light, OverlayTexture.NO_OVERLAY);
+                GlintOutline.IS_RENDERING_LEGGINGS.remove();
             }
 
             GlintOutline.IS_RENDERING_OUTLINE.remove();
