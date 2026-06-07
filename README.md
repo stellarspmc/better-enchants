@@ -15,7 +15,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] 1.21.1 NeoForge
 - [x] Item rendering
 - [x] Trident / Shield rendering
-- [ ] Armor rendering
+- [x] Armor rendering
   - [ ] Elytra rendering
 - [ ] Proper tests
   - [ ] Performance

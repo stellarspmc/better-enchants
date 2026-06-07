@@ -2,11 +2,11 @@ package net.enchantoutline.mixin;
 
 import net.enchantoutline.GlintOutline;
 import net.enchantoutline.util.Shaders;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.client.ClientHooks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,17 +30,11 @@ public class HumanoidArmorLayerMixin {
         if (armorStack.getItem() instanceof ArmorItem armoritem) {
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
 
-            boolean isDyeable = armoritem.getMaterial().value().layers().size() > 1;
             for (int layerIdx = 0; layerIdx < armoritem.getMaterial().value().layers().size(); layerIdx++) {
                 ArmorMaterial.Layer layer = armoritem.getMaterial().value().layers().get(layerIdx);
+                VertexConsumer outlineConsumer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(ClientHooks.getArmorTexture(entity, armorStack, layer, slot == EquipmentSlot.LEGS, slot)));
 
-                ResourceLocation texture = layer.texture(isDyeable && layerIdx == 0);
-
-                VertexConsumer outlineConsumer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(texture));
-
-                if (slot == EquipmentSlot.LEGS) GlintOutline.IS_RENDERING_LEGGINGS.set(true);
                 model.renderToBuffer(poseStack, outlineConsumer, light, OverlayTexture.NO_OVERLAY);
-                GlintOutline.IS_RENDERING_LEGGINGS.remove();
             }
 
             GlintOutline.IS_RENDERING_OUTLINE.remove();
