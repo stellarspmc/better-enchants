@@ -33,6 +33,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] FerriteCore
 - [x] Model Gap Fix
 - [x] Particle Core 
+- [ ] Iris (yet to be tested)
 
 > Safe to assume that most performance mods are supported.
 
@@ -49,6 +50,8 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [ ] Cataclysm (partial support)
 - [ ] Silent Gear (no idea why, working on it)
 - [x] Punchy (safe to assume applies to Hold My Items and other similar mods)
+- [ ] Sable / Aeronautics (yet to be tested)
+- [ ] Sinytra Connector (the mixin mess might break stuff)
 
 > Safe to assume most content mods are supported.
 > 
