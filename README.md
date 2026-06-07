@@ -23,5 +23,5 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
   - [ ] Mod Support: ImmediateFast
   - [ ] Mod Support: Iris
   - [ ] Mod Support: Everything else
-- [ ] Config
+- [x] Config
   - [ ] YACL

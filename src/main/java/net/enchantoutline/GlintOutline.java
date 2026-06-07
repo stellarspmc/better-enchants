@@ -15,8 +15,6 @@ public class GlintOutline {
 
     public static final ThreadLocal<Boolean> IS_RENDERING_OUTLINE = ThreadLocal.withInitial(() -> false);
 
-    public static float[] OUTLINE_COLOR = {.85f, .7f, .25f, 1f};
-
     public GlintOutline(ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.CLIENT, GlintOutlineConfig.SPEC);
     }

@@ -43,7 +43,7 @@ public class ModelPartCubeMixin {
 
                         for(int i = 0; i < vertPoses.length; i++) VertexHelper.packVertexData(vertexData, i, vertPoses[i], vertices[i].u, vertices[i].v);
                         BakedQuad enchantmentQuad = new BakedQuad(VertexHelper.flip(vertexData), -1, Direction.getNearest(quad.normal.x, quad.normal.y, quad.normal.z), null, false, true);
-                        consumer.putBulkData(pose, enchantmentQuad, GlintOutline.OUTLINE_COLOR[0], GlintOutline.OUTLINE_COLOR[1], GlintOutline.OUTLINE_COLOR[2], .99f, 0, 0); // I love the inconsistency about this
+                        consumer.putBulkData(pose, enchantmentQuad, GlintOutlineConfig.OUTLINE_COLOR.get().getFirst().floatValue() / 255f, GlintOutlineConfig.OUTLINE_COLOR.get().get(1).floatValue() / 255f, GlintOutlineConfig.OUTLINE_COLOR.get().get(2).floatValue() / 255f, .99f, 0, 0); // I love the inconsistency about this
                     }
                 }
             }

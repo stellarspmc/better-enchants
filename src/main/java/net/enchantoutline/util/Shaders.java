@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.enchantoutline.GlintOutline;
+import net.enchantoutline.config.GlintOutlineConfig;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -15,6 +16,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @EventBusSubscriber(modid = GlintOutline.MOD_ID)
@@ -99,9 +101,13 @@ public class Shaders {
     @SubscribeEvent
     public static void onRegisterShaders(RegisterShadersEvent event) {
         try {
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "item"), DefaultVertexFormat.BLOCK), shaderInstance -> itemShaderInstance = shaderInstance);
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "item"), DefaultVertexFormat.BLOCK), shaderInstance -> {
+                Objects.requireNonNull(shaderInstance.getUniform("GlowColor")).set(GlintOutlineConfig.OUTLINE_COLOR.get().getFirst().floatValue() / 255f, GlintOutlineConfig.OUTLINE_COLOR.get().get(1).floatValue() / 255f, GlintOutlineConfig.OUTLINE_COLOR.get().get(2).floatValue() / 255f, GlintOutlineConfig.OUTLINE_COLOR.get().get(3).floatValue() / 255f);
+                itemShaderInstance = shaderInstance;
+            });
             event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "model"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> modelInstance = shaderInstance);
             event.registerShader(new ShaderInstance(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(GlintOutline.MOD_ID, "armor"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> armorInstance = shaderInstance);
+
         } catch (Exception e) {
             GlintOutline.LOGGER.error("Failed to load shaders!", e);
         }
