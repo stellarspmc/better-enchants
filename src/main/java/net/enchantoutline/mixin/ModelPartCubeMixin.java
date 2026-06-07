@@ -3,6 +3,7 @@ package net.enchantoutline.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.enchantoutline.GlintOutline;
+import net.enchantoutline.config.GlintOutlineConfig;
 import net.enchantoutline.util.VertexHelper;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -32,9 +33,9 @@ public class ModelPartCubeMixin {
                 for(int i = 0; i < defaultVerts.length; i++) defaultVerts[i] = (new Vector3f(vertices[i].pos)).div(16.0F);
                 Vector3f faceVec = new Vector3f(quad.normal);
                 faceVec.normalize();
-                faceVec.mul(GlintOutline.SCALE);
+                faceVec.mul((float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble());
 
-                Vector3f[] cardinalDirs = VertexHelper.getFaceCardinalDirs(defaultVerts, GlintOutline.SCALE);
+                Vector3f[] cardinalDirs = VertexHelper.getFaceCardinalDirs(defaultVerts, (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble());
                 if (cardinalDirs != null) {
                     for (Vector3f dir : cardinalDirs) {
                         Vector3f[] vertPoses = VertexHelper.growFace(defaultVerts, dir, faceVec);

@@ -16,7 +16,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Item rendering
 - [x] Trident / Shield rendering
 - [x] Armor rendering
-  - [ ] Elytra rendering
+  - [x] Elytra rendering
 - [ ] Proper tests
   - [ ] Performance
   - [ ] Mod Support: Sodium

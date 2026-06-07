@@ -1,7 +1,10 @@
 package net.enchantoutline;
 
+import net.enchantoutline.config.GlintOutlineConfig;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 
+import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +15,9 @@ public class GlintOutline {
 
     public static final ThreadLocal<Boolean> IS_RENDERING_OUTLINE = ThreadLocal.withInitial(() -> false);
 
-    public static final float SCALE = 0.025f;
-    public static final float[] OUTLINE_COLOR = {.85f, .7f, .25f, 1f};
+    public static float[] OUTLINE_COLOR = {.85f, .7f, .25f, 1f};
+
+    public GlintOutline(ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.CLIENT, GlintOutlineConfig.SPEC);
+    }
 }
