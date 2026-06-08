@@ -1,6 +1,7 @@
 # Enchant Outline ( for 1.21.1 NeoForge )
 
 > Unofficial NeoForge port for 1.21.1 because I wanted it
+> I'm evil I took credit for this mod
 
 ## Special Thanks
 
