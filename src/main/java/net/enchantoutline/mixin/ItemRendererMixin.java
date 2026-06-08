@@ -1,7 +1,6 @@
 package net.enchantoutline.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.enchantoutline.config.GlintOutlineConfig;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -41,14 +40,15 @@ public abstract class ItemRendererMixin {
         }
 
         ItemRenderer self = (ItemRenderer) (Object) this;
-        VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getItemOutlineLayer());
+        //VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getItemOutlineLayer());
+        MultiBufferSource outlineWrapper = renderType -> bufferSource.getBuffer(Shaders.getItemOutlineLayer());
         float thickness = (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble();
 
         for (float[] baseOffset : OUTLINE_OFFSETS_BASE) {
             poseStack.pushPose();
             model.applyTransform(ctx, poseStack, leftHand);
             poseStack.translate(baseOffset[0] * thickness - .5f, baseOffset[1] * thickness - .5f, -.5f);
-            self.renderModelLists(model, stack, light, overlay, poseStack, outlineBuffer);
+            self.renderModelLists(model, stack, light, overlay, poseStack, outlineWrapper.getBuffer(Shaders.getItemOutlineLayer()));
             poseStack.popPose();
         }
     }

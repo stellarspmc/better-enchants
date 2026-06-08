@@ -50,7 +50,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Not Enough Animations
 - [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
-- [ ] Silent Gear (no idea why, working on it)
+- [ ] Silent Gear (testing)
 - [x] Sable / Aeronautics
 - [ ] Sinytra Connector (ytb tested)
 
