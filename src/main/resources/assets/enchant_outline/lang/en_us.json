@@ -1,0 +1,6 @@
+{
+  "enchant_outline.configuration.outlineSize": "Outline Size",
+  "enchant_outline.configuration.color": "Outline Color",
+  "enchant_outline.configuration.blacklistItems": "Blacklist",
+  "enchant_outline.configuration.allEnchantedGear": "Use isEnchanted()"
+}

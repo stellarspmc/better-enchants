@@ -8,6 +8,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +23,10 @@ public class GlintOutline {
     public GlintOutline(ModContainer modContainer, IEventBus modBusEvent) {
         modContainer.registerConfig(ModConfig.Type.CLIENT, GlintOutlineConfig.SPEC);
         modBusEvent.addListener(GlintOutline::onConfigReload);
+        modContainer.registerExtensionPoint(
+                IConfigScreenFactory.class,
+                (minecraft, parentScreen) -> new ConfigurationScreen(modContainer, parentScreen)
+        );
     }
 
     private static void onConfigReload(ModConfigEvent.Reloading event) {
