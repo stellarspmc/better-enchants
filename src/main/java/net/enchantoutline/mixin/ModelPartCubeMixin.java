@@ -28,6 +28,8 @@ public class ModelPartCubeMixin {
 
     @Inject(method = "compile", at = @At("HEAD"), cancellable = true)
     public void better_enchants$outlineMagic(PoseStack.Pose pose, VertexConsumer consumer, int p_171335_, int p_171336_, int p_350744_, CallbackInfo ci) {
+        if (!GlintOutlineConfig.ENABLED.get()) return;
+
         if (GlintOutline.IS_RENDERING_OUTLINE.get()) {
 
             float outlineSize = (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble();

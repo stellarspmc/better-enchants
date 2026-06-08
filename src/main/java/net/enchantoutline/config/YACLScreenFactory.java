@@ -11,26 +11,102 @@ public class YACLScreenFactory {
 
     public static Screen create(Screen parent) {
         return YetAnotherConfigLib.createBuilder()
-                .title(Component.literal("Glint Outline Settings"))
+                .title(Component.translatable("enchant_outline.configuration.title"))
                 .category(ConfigCategory.createBuilder()
-                        .name(Component.literal("General Settings"))
+                        .name(Component.translatable("enchant_outline.configuration.enabledCategory"))
+
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.enabled"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.enabled.desc")))
+                                .binding(
+                                        GlintOutlineConfig.ENABLED.getDefault(),
+                                        GlintOutlineConfig.ENABLED,
+                                        GlintOutlineConfig.ENABLED::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.itemEnabled"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.itemEnabled.desc")))
+                                .binding(
+                                        GlintOutlineConfig.ITEMS_ENABLED.getDefault(),
+                                        GlintOutlineConfig.ITEMS_ENABLED,
+                                        GlintOutlineConfig.ITEMS_ENABLED::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.armorEnabled"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.armorEnabled.desc")))
+                                .binding(
+                                        GlintOutlineConfig.ARMOR_ENABLED.getDefault(),
+                                        GlintOutlineConfig.ARMOR_ENABLED,
+                                        GlintOutlineConfig.ARMOR_ENABLED::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.blockEntitiesEnabled"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.blockEntitiesEnabled.desc")))
+                                .binding(
+                                        GlintOutlineConfig.BE_ENABLED.getDefault(),
+                                        GlintOutlineConfig.BE_ENABLED,
+                                        GlintOutlineConfig.BE_ENABLED::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.elytraEnabled"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.elytraEnabled.desc")))
+                                .binding(
+                                        GlintOutlineConfig.ELYTRA_ENABLED.getDefault(),
+                                        GlintOutlineConfig.ELYTRA_ENABLED,
+                                        GlintOutlineConfig.ELYTRA_ENABLED::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.thrownTridentEnabled"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.thrownTridentEnabled.desc")))
+                                .binding(
+                                        GlintOutlineConfig.TRIDENT_ENABLED.getDefault(),
+                                        GlintOutlineConfig.TRIDENT_ENABLED,
+                                        GlintOutlineConfig.TRIDENT_ENABLED::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .build())
+
+                .category(ConfigCategory.createBuilder()
+                        .name(Component.translatable("enchant_outline.configuration.customizationCategory"))
 
                         .option(Option.<Double>createBuilder()
-                                .name(Component.literal("Outline Size"))
-                                .description(OptionDescription.of(Component.literal("Adjust the thickness of the enchanted outline overlay.")))
+                                .name(Component.translatable("enchant_outline.configuration.outlineSize"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.outlineSize.desc")))
                                 .binding(
                                         GlintOutlineConfig.OUTLINE_SIZE.getDefault(),
                                         GlintOutlineConfig.OUTLINE_SIZE,
                                         GlintOutlineConfig.OUTLINE_SIZE::set
                                 )
-                                .controller(opt -> DoubleSliderControllerBuilder.create(opt).range(0.0, 0.5).step(0.005))
+                                .controller(opt -> DoubleSliderControllerBuilder.create(opt).range(0.0, 0.25).step(0.005))
                                 .build())
 
                         .option(Option.<Color>createBuilder()
-                                .name(Component.literal("Outline Color"))
-                                .description(OptionDescription.of(Component.literal("Choose the RGBA for the enchanted outline overlay.")))
+                                .name(Component.translatable("enchant_outline.configuration.color"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.color.desc")))
                                 .binding(
-                                        new Color(216, 178, 63, 255),
+                                        new Color(
+                                                GlintOutlineConfig.OUTLINE_COLOR.getDefault().getFirst().intValue(),
+                                                GlintOutlineConfig.OUTLINE_COLOR.getDefault().get(1).intValue(),
+                                                GlintOutlineConfig.OUTLINE_COLOR.getDefault().get(2).intValue(),
+                                                GlintOutlineConfig.OUTLINE_COLOR.getDefault().get(3).intValue()
+                                        ),
                                         () -> new Color(
                                                 GlintOutlineConfig.OUTLINE_COLOR.get().getFirst().intValue(),
                                                 GlintOutlineConfig.OUTLINE_COLOR.get().get(1).intValue(),
@@ -42,9 +118,52 @@ public class YACLScreenFactory {
                                 .controller(opt -> ColorControllerBuilder.create(opt).allowAlpha(true))
                                 .build())
 
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.inventory"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.inventory.desc")))
+                                .binding(
+                                        GlintOutlineConfig.ENABLED_IN_INVENTORY.getDefault(),
+                                        GlintOutlineConfig.ENABLED_IN_INVENTORY,
+                                        GlintOutlineConfig.ENABLED_IN_INVENTORY::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .build())
+
+                .category(ConfigCategory.createBuilder()
+                        .name(Component.translatable("enchant_outline.configuration.compatCategory"))
+
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.allEnchantedGear"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.allEnchantedGear.desc")))
+                                .binding(
+                                        GlintOutlineConfig.ALL_ENCHANTED_GEAR.getDefault(),
+                                        GlintOutlineConfig.ALL_ENCHANTED_GEAR,
+                                        GlintOutlineConfig.ALL_ENCHANTED_GEAR::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Component.translatable("enchant_outline.configuration.silentGear"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.silentGear.desc")))
+                                .binding(
+                                        GlintOutlineConfig.SILENT_GEAR.getDefault(),
+                                        GlintOutlineConfig.SILENT_GEAR,
+                                        GlintOutlineConfig.SILENT_GEAR::set
+                                )
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+
+                        .build())
+
+                .category(ConfigCategory.createBuilder()
+                        .name(Component.translatable("enchant_outline.configuration.itemCategory"))
+
                         .option(ListOption.<String>createBuilder()
-                                .name(Component.literal("Blacklisted Items"))
-                                .description(OptionDescription.of(Component.literal("A list of item IDs (e.g., 'minecraft:barrier') that should not receive the glow outline effect.")))
+                                .name(Component.translatable("enchant_outline.configuration.blacklistItems"))
+                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.blacklistItems.desc")))
                                 .initial("")
                                 .binding(
                                         List.of("minecraft:barrier"),
@@ -56,16 +175,6 @@ public class YACLScreenFactory {
                                 .controller(StringControllerBuilder::create)
                                 .build())
 
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.literal("Use isEnchanted() Checks"))
-                                .description(OptionDescription.of(Component.literal("Bypasses standard vanilla isFoil flags. Turn on to fix Silent Gear tool displays!")))
-                                .binding(
-                                        GlintOutlineConfig.ALL_ENCHANTED_GEAR.getDefault(),
-                                        GlintOutlineConfig.ALL_ENCHANTED_GEAR,
-                                        GlintOutlineConfig.ALL_ENCHANTED_GEAR::set
-                                )
-                                .controller(TickBoxControllerBuilder::create)
-                                .build())
                         .build())
 
                 .save(() -> {

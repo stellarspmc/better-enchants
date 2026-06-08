@@ -2,6 +2,7 @@ package net.enchantoutline.mixin;
 
 import net.enchantoutline.GlintOutline;
 import net.enchantoutline.config.GlintOutlineConfig;
+import net.enchantoutline.util.MixinHelper;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -27,8 +28,9 @@ public class HumanoidArmorLayerMixin {
     @Inject(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At("TAIL"))
     private void enchant_outline$addTridentArmorOutlinePass(PoseStack poseStack, MultiBufferSource bufferSource, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<?> model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         ItemStack armorStack = entity.getItemBySlot(slot);
+        if (!(GlintOutlineConfig.ENABLED.get() && GlintOutlineConfig.ARMOR_ENABLED.get())) return;
         if (armorStack.isEmpty() || armorStack.is(Items.ELYTRA) || GlintOutlineConfig.BLACKLISTED_ITEMS.contains(armorStack.getItem())) return;
-        if (GlintOutlineConfig.ALL_ENCHANTED_GEAR.get() ? !armorStack.isEnchanted() : !armorStack.hasFoil()) return;
+        if (MixinHelper.invertedCheckFoilOrEnchanted(armorStack)) return;
         if (armorStack.getItem() instanceof ArmorItem armoritem) {
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
 
@@ -40,7 +42,7 @@ public class HumanoidArmorLayerMixin {
             }
 
             GlintOutline.IS_RENDERING_OUTLINE.remove();
-        }
+        } // TODO: mekanism uses (interface ISpecialGear extends IClientItemExtensions) to render armor, i have no idea how to hook into it
     }
 
 }

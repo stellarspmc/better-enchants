@@ -1,6 +1,67 @@
 {
+  "enchant_outline.configuration.title": "Enchant Outline Settings",
+  "enchant_outline.configuration.enabledCategory": "Enabled Settings",
+
+  "enchant_outline.configuration.enabled": "Mod Enabled",
+  "enchant_outline.configuration.enabled.desc": "Enable the enchanted outline overlay.",
+
+  "enchant_outline.configuration.itemEnabled": "Items Enabled",
+  "enchant_outline.configuration.itemEnabled.desc": "Enable the enchanted outline overlay for items.",
+
+  "enchant_outline.configuration.armorEnabled": "Armor Enabled",
+  "enchant_outline.configuration.armorEnabled.desc": "Enable the enchanted outline overlay for armor.",
+
+  "enchant_outline.configuration.elytraEnabled": "Elytra Enabled",
+  "enchant_outline.configuration.elytraEnabled.desc": "Enable the enchanted outline overlay for the elytra.",
+
+  "enchant_outline.configuration.blockEntitiesEnabled": "Block Entities Enabled",
+  "enchant_outline.configuration.blockEntitiesEnabled.desc": "Enable the enchanted outline overlay for custom models being held (shields / tridents).",
+
+  "enchant_outline.configuration.thrownTridentEnabled": "Thrown Trident Enabled",
+  "enchant_outline.configuration.thrownTridentEnabled.desc": "Enable the enchanted outline overlay for the thrown trident.",
+
+  "enchant_outline.configuration.customizationCategory": "Customization Settings",
+
   "enchant_outline.configuration.outlineSize": "Outline Size",
+  "enchant_outline.configuration.outlineSize.desc": "Adjust the thickness of the enchanted outline overlay. Please don't go over 0.2...",
+
   "enchant_outline.configuration.color": "Outline Color",
+  "enchant_outline.configuration.color.desc": "Choose the RGBA for the enchanted outline overlay.",
+
+  "enchant_outline.configuration.inventory": "Render in Inventory",
+  "enchant_outline.configuration.inventory.desc": "Enables the glint outline effect for items inside your inventory, chests, and crafting menus.",
+
+  "enchant_outline.configuration.compatCategory": "Compatibility Settings",
+
+  "enchant_outline.configuration.allEnchantedGear": "Use isEnchanted() Checks",
+  "enchant_outline.configuration.allEnchantedGear.desc": "Bypasses standard vanilla isFoil flags. May cause unwanted side effects but most of the options below require this to be enabled.",
+
+  "enchant_outline.configuration.silentGear": "Silent Gear Compatibility",
+  "enchant_outline.configuration.silentGear.desc": "Turn on to fix Silent Gear tool displays!",
+
+  "enchant_outline.configuration.cataclysm": "Cataclysm Compatibility",
+  "enchant_outline.configuration.cataclysm.desc": "Your Cataclysm weapons look way cooler with this!",
+
+  "enchant_outline.configuration.avaritia": "Avaritia Compatibility",
+  "enchant_outline.configuration.avaritia.desc": "Infinity Sword, but wayyyyyyy cooler!",
+
+  "enchant_outline.configuration.tacz": "TACZ Compatibility",
+  "enchant_outline.configuration.tacz.desc": "Glowing guns?",
+
+  "enchant_outline.configuration.mekanism": "Mekanism Compatibility",
+  "enchant_outline.configuration.mekanism.desc": "Its mekanism!!!",
+
+  "enchant_outline.configuration.slash": "SlashBlade Compatibility",
+  "enchant_outline.configuration.slash.desc": "The blades are scuffed without this",
+
+  "enchant_outline.configuration.artiReq": "Artifacts & Reliquary Compatibility",
+  "enchant_outline.configuration.artiReq.desc": "The umbrella is being weird",
+
+  "enchant_outline.configuration.itemCategory": "Item Settings",
+
   "enchant_outline.configuration.blacklistItems": "Blacklisted Items",
-  "enchant_outline.configuration.allEnchantedGear": "Use isEnchanted() Checks"
+  "enchant_outline.configuration.blacklistItems.desc": "A list of item IDs (e.g., 'minecraft:barrier') that should not receive the glow outline effect.",
+
+  "enchant_outline.configuration.itemColor": "Colored Items",
+  "enchant_outline.configuration.itemColor.desc": "A list of item IDs (e.g., 'minecraft:barrier') that would use another specified color."
 }

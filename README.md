@@ -14,12 +14,13 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 
 - [x] 1.21.1 NeoForge
 - [x] Item rendering
-- [x] Trident / Shield rendering
+- [x] Block Entity (Shield / Trident) rendering
+  - [x] Thrown Trident rendering
+  - [ ] Arrow rendering (just an idea)
 - [x] Armor rendering
   - [x] Elytra rendering
-- [x] Proper tests
-  - [x] Performance
-  - [x] Mod Support
+- [x] Performance Mod Support
+- [ ] Content Mod Support (read below)
 - [x] Config
   - [x] Screen
 
@@ -34,6 +35,8 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] FerriteCore
 - [x] Model Gap Fix
 - [x] Particle Core
+- [x] Ixeris
+- [x] Gnetum
 
 > Safe to assume that most performance mods are supported.
 
@@ -50,13 +53,16 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Not Enough Animations
 - [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
+- [x] Reliquary (mostly working, probably requires some tinkering tho)
+- [ ] Artifacts (partial support, but come on why do you need to enchant your artifact)
+- [ ] Mekanism (nope)
 - [x] Silent Gear
 - [x] Sable / Aeronautics
 - [ ] Sinytra Connector (ytb tested)
 
 > Safe to assume most content mods are supported.
 > 
-> There's of course exceptions, like cataclysm, there is no way that this simple implementation would support such heavy mod
+> There's of course exceptions, like cataclysm / tacz, there is no way that this simple implementation would support such heavy mod
 > 
 > Some edge cases are not tested, it would be great for it to be reported via issues tab
 > 

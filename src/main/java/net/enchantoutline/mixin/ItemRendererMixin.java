@@ -3,6 +3,7 @@ package net.enchantoutline.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.enchantoutline.config.GlintOutlineConfig;
+import net.enchantoutline.util.MixinHelper;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -31,9 +32,10 @@ public abstract class ItemRendererMixin {
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "render", at = @At("HEAD"))
     private void enchant_outline$addItemOutlinePass(ItemStack stack, ItemDisplayContext ctx, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, BakedModel model, CallbackInfo ci) {
-        if (ctx == ItemDisplayContext.GUI) return;
+        if (!(GlintOutlineConfig.ENABLED.get() && GlintOutlineConfig.ITEMS_ENABLED.get())) return;
+        if (MixinHelper.inventoryOutline(ctx)) return;
         if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(stack.getItem())) return;
-        if (GlintOutlineConfig.ALL_ENCHANTED_GEAR.get() ? !stack.isEnchanted() : !stack.hasFoil()) return;
+        if (MixinHelper.invertedCheckFoilOrEnchanted(stack)) return;
 
         if (Shaders.itemShaderInstance != null) {
             var glowUniform = Shaders.itemShaderInstance.getUniform("GlowColor");
@@ -45,7 +47,7 @@ public abstract class ItemRendererMixin {
 
         float thickness = (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble();
 
-        if (BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("silentgear")) { // hacky approach
+        if (BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("silentgear") && GlintOutlineConfig.SILENT_GEAR.get()) { // hacky approach
             var customRenderer = IClientItemExtensions.of(stack).getCustomRenderer();
             if (customRenderer == null) return;
 

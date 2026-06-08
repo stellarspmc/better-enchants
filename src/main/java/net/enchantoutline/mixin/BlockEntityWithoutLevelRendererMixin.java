@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.enchantoutline.GlintOutline;
 import net.enchantoutline.config.GlintOutlineConfig;
+import net.enchantoutline.util.MixinHelper;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.client.model.ShieldModel;
 import net.minecraft.client.model.TridentModel;
@@ -27,8 +28,9 @@ public class BlockEntityWithoutLevelRendererMixin {
 
     @Inject(method = "renderByItem", at = @At("HEAD"))
     private void better_enchants$addBlockEntityOutlinePass(ItemStack stack, ItemDisplayContext ctx, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, CallbackInfo ci) {
-        if (ctx == ItemDisplayContext.GUI) return;
-        if (GlintOutlineConfig.ALL_ENCHANTED_GEAR.get() ? !stack.isEnchanted() : !stack.hasFoil()) return;
+        if (!(GlintOutlineConfig.ENABLED.get() && GlintOutlineConfig.BE_ENABLED.get())) return;
+        if (MixinHelper.inventoryOutline(ctx)) return;
+        if (MixinHelper.invertedCheckFoilOrEnchanted(stack)) return;
         if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(stack.getItem())) return;
 
         VertexConsumer consumer = null;
@@ -46,6 +48,11 @@ public class BlockEntityWithoutLevelRendererMixin {
             poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(180f));
             poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180f));
         }
+
+        // TODO: cataclysm has the custom renderer here (class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer), probably support here
+        // TODO: mekanism extends (class MekanismISTER extends BlockEntityWithoutLevelRenderer) to achieve rendering items
+        // TODO: artifact umbrella uses (class UmbrellaArmPoseHandler) which uses an event
+        // `UmbrellaArmPoseHelper.setUmbrellaArmPose(event.getRenderer().getModel(), event.getEntity())`
 
         if (consumer != null) {
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
