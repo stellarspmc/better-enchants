@@ -3,6 +3,7 @@ package net.enchantoutline.mixin.avaritia;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.enchantoutline.config.GlintOutlineConfig;
+import net.enchantoutline.util.AvaritiaWrappedBridge;
 import net.enchantoutline.util.MixinHelper;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,8 +31,8 @@ public abstract class AvaritiaBakedModelMixin {
             {1.0f, 1.0f},  {1.0f, -1.0f},  {-1.0f, 1.0f}, {-1.0f, -1.0f}
     };
 
-    @Shadow(remap = false) public abstract void renderWrapped(ItemStack stack, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, boolean allowRender);
-    @Shadow(remap = false) public abstract void renderCosmicLayer(ItemStack stack, ItemDisplayContext transformType, PoseStack pStack, MultiBufferSource source, int packedLight, int packedOverlay);
+    @Shadow(remap = false)
+    public abstract void renderCosmicLayer(ItemStack stack, ItemDisplayContext transformType, PoseStack pStack, MultiBufferSource source, int packedLight, int packedOverlay);
 
     @Inject(method = "renderItem", at = @At("HEAD"))
     private void enchant_outline$addAvaritiaOutlinePass(ItemStack stack, ItemDisplayContext transformType, PoseStack pStack, MultiBufferSource source, int packedLight, int packedOverlay, CallbackInfo ci) {
@@ -59,7 +60,7 @@ public abstract class AvaritiaBakedModelMixin {
         for (float[] baseOffset : OUTLINE_OFFSETS_BASE) {
             pStack.pushPose();
             pStack.translate(baseOffset[0] * thickness, baseOffset[1] * thickness, 0.0f);
-            this.renderWrapped(stack, pStack, outlineWrapper, packedLight, packedOverlay, true);
+            ((AvaritiaWrappedBridge) this).enchant_outline$bridgeRenderWrapped(stack, pStack, outlineWrapper, packedLight, packedOverlay, true);
             this.renderCosmicLayer(stack, transformType, pStack, outlineWrapper, packedLight, packedOverlay);
             pStack.popPose();
         }
