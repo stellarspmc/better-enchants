@@ -51,7 +51,6 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Boss of Mass Destruction (probably?)
 - [x] Punchy (safe to assume applies to Hold My Items and other similar mods)
 - [x] Not Enough Animations
-- [x] Avaritia
 - [x] Silent Gear
 - [x] Sable / Aeronautics (at least it doesn't crash)
 - [x] Reliquary (mostly working, probably requires some tinkering tho)
@@ -61,7 +60,8 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
 - [ ] Artifacts (partial support, but come on why do you need to enchant your artifact)
-- [ ] Mekanism (considering but not planned, too messy, definitely will ruin codebase)
+- [ ] Mekanism (considering but not planned, too messy)
+- [ ] Avaritia (only the ones that touches the custom shader thingy like inf sword)
 
 > Safe to assume most content mods are supported.
 > There's of course exceptions, like cataclysm / tacz, there is no way that this simple implementation would support such heavy mod
