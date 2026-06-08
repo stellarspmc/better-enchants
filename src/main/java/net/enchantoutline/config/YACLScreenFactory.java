@@ -145,17 +145,6 @@ public class YACLScreenFactory {
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
 
-                        .option(Option.<Boolean>createBuilder()
-                                .name(Component.translatable("enchant_outline.configuration.silentGear"))
-                                .description(OptionDescription.of(Component.translatable("enchant_outline.configuration.silentGear.desc")))
-                                .binding(
-                                        GlintOutlineConfig.SILENT_GEAR.getDefault(),
-                                        GlintOutlineConfig.SILENT_GEAR,
-                                        GlintOutlineConfig.SILENT_GEAR::set
-                                )
-                                .controller(TickBoxControllerBuilder::create)
-                                .build())
-
                         .build())
 
                 .category(ConfigCategory.createBuilder()

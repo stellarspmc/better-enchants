@@ -36,20 +36,11 @@
   "enchant_outline.configuration.allEnchantedGear": "Use isEnchanted() Checks",
   "enchant_outline.configuration.allEnchantedGear.desc": "Bypasses standard vanilla isFoil flags. May cause unwanted side effects but most of the options below require this to be enabled.",
 
-  "enchant_outline.configuration.silentGear": "Silent Gear Compatibility",
-  "enchant_outline.configuration.silentGear.desc": "Turn on to fix Silent Gear tool displays!",
-
   "enchant_outline.configuration.cataclysm": "Cataclysm Compatibility",
   "enchant_outline.configuration.cataclysm.desc": "Your Cataclysm weapons look way cooler with this!",
 
-  "enchant_outline.configuration.avaritia": "Avaritia Compatibility",
-  "enchant_outline.configuration.avaritia.desc": "Infinity Sword, but wayyyyyyy cooler!",
-
   "enchant_outline.configuration.tacz": "TACZ Compatibility",
   "enchant_outline.configuration.tacz.desc": "Glowing guns?",
-
-  "enchant_outline.configuration.mekanism": "Mekanism Compatibility",
-  "enchant_outline.configuration.mekanism.desc": "Its mekanism!!!",
 
   "enchant_outline.configuration.slash": "SlashBlade Compatibility",
   "enchant_outline.configuration.slash.desc": "The blades are scuffed without this",

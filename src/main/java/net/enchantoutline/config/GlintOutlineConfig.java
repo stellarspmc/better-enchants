@@ -58,10 +58,6 @@ public class GlintOutlineConfig { // NOT 100% parity!
             .translation("enchant_outline.configuration.allEnchantedGear.desc")
             .define("allEnchantedGear", false);
 
-    public static final ModConfigSpec.BooleanValue SILENT_GEAR = BUILDER
-            .translation("enchant_outline.configuration.silentGear.desc")
-            .define("silentGear", false);
-
     // inv cate
     static final ModConfigSpec.ConfigValue<List<? extends String>> CONFIG_BLACKLIST = BUILDER
             .translation("enchant_outline.configuration.blacklistItems.desc")

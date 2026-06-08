@@ -51,14 +51,17 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Boss of Mass Destruction (probably?)
 - [x] Punchy (safe to assume applies to Hold My Items and other similar mods)
 - [x] Not Enough Animations
+- [x] Avaritia (the codebase is ruined by this mod)
+- [x] Silent Gear
+- [x] Sable / Aeronautics (at least it doesn't crash)
+- [x] Reliquary (mostly working, probably requires some tinkering tho)
+- [ ] Sinytra Connector (ytb tested)
+
+## Won't Fix
 - [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
-- [x] Reliquary (mostly working, probably requires some tinkering tho)
 - [ ] Artifacts (partial support, but come on why do you need to enchant your artifact)
-- [ ] Mekanism (nope)
-- [x] Silent Gear
-- [x] Sable / Aeronautics
-- [ ] Sinytra Connector (ytb tested)
+- [ ] Mekanism (nope, not planned, too messy, definitely will ruin codebase)
 
 > Safe to assume most content mods are supported.
 > 
