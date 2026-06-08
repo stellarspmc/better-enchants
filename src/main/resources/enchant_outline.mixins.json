@@ -15,5 +15,8 @@
     "ItemRendererMixin",
     "ModelPartCubeMixin",
     "ThrownTridentRendererMixin"
+  ],
+  "mixins": [
+    "avaritia.AvaritiaBakedModelMixin"
   ]
 }

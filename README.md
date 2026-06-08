@@ -51,8 +51,8 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Boss of Mass Destruction (probably?)
 - [x] Punchy (safe to assume applies to Hold My Items and other similar mods)
 - [x] Not Enough Animations
-- [x] Avaritia (the codebase is ruined by this mod)
-- [ ] Silent Gear (broken on v3.3.4, branching to use mixins for avaritia)
+- [x] Avaritia
+- [x] Silent Gear
 - [x] Sable / Aeronautics (at least it doesn't crash)
 - [x] Reliquary (mostly working, probably requires some tinkering tho)
 - [ ] Sinytra Connector (ytb tested)
