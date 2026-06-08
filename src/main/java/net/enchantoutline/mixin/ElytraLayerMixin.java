@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.PlayerModelPart;
+import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Final;
@@ -38,23 +39,24 @@ public class ElytraLayerMixin {
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("TAIL"))
     public void enchant_outline$addElytraArmorOutlinePass(PoseStack poseStack, MultiBufferSource bufferSource, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         if (!(GlintOutlineConfig.ENABLED.get() && GlintOutlineConfig.ELYTRA_ENABLED.get())) return;
-        ItemStack elytra = entity.getItemBySlot(EquipmentSlot.CHEST);
-        if (!elytra.is(Items.ELYTRA)) return; // this is another hardcode, have to get if the item extends ElytraItem
-        ResourceLocation texture = getElytraTexture(elytra, entity);
-        if (MixinHelper.invertedCheckFoilOrEnchanted(elytra)) return;
-        if (entity instanceof AbstractClientPlayer player) {
-            PlayerSkin skin = player.getSkin();
-            if (skin.elytraTexture() != null) texture = skin.elytraTexture();
-            else if (skin.capeTexture() != null && player.isModelPartShown(PlayerModelPart.CAPE)) texture = skin.capeTexture();
-        }
+        ItemStack stack = entity.getItemBySlot(EquipmentSlot.CHEST);
+        if (stack.getItem() instanceof ElytraItem) {
+            ResourceLocation texture = getElytraTexture(stack, entity);
+            if (MixinHelper.invertedCheckFoilOrEnchanted(stack)) return;
+            if (entity instanceof AbstractClientPlayer player) {
+                PlayerSkin skin = player.getSkin();
+                if (skin.elytraTexture() != null) texture = skin.elytraTexture();
+                else if (skin.capeTexture() != null && player.isModelPartShown(PlayerModelPart.CAPE)) texture = skin.capeTexture();
+            }
 
-        poseStack.pushPose();
-        poseStack.translate(0f, 0f, 0.1f); // probably works although hardcoded in
-        GlintOutline.IS_RENDERING_OUTLINE.set(true);
-        VertexConsumer outlineConsumer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(texture));
-        elytraModel.renderToBuffer(poseStack, outlineConsumer, light, OverlayTexture.NO_OVERLAY);
-        GlintOutline.IS_RENDERING_OUTLINE.remove();
-        poseStack.popPose();
+            poseStack.pushPose();
+            poseStack.translate(0f, 0f, 0.1f); // probably works although hardcoded in
+            GlintOutline.IS_RENDERING_OUTLINE.set(true);
+            VertexConsumer outlineConsumer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(texture));
+            elytraModel.renderToBuffer(poseStack, outlineConsumer, light, OverlayTexture.NO_OVERLAY);
+            GlintOutline.IS_RENDERING_OUTLINE.remove();
+            poseStack.popPose();
+        }
     }
 
 }
