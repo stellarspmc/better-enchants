@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.enchantoutline.GlintOutline;
+import net.enchantoutline.config.GlintOutlineConfig;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.client.model.TridentModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,6 +27,7 @@ public class ThrownTridentRendererMixin {
     @Inject(method = "render(Lnet/minecraft/world/entity/projectile/ThrownTrident;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("HEAD"))
     private void better_enchants$addOutlinePass(ThrownTrident trident, float yaw, float pitch, PoseStack poseStack, MultiBufferSource bufferSource, int light, CallbackInfo ci) {
         if (!trident.isFoil()) return;
+        if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(trident.getWeaponItem().getItem())) return;
 
         VertexConsumer consumer = bufferSource.getBuffer(Shaders.getModelOutlineLayer());
 

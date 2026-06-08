@@ -2,9 +2,14 @@ package net.enchantoutline.config;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GlintOutlineConfig { // NOT 100% parity!
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -17,9 +22,9 @@ public class GlintOutlineConfig { // NOT 100% parity!
             .comment("The color of the outline in (r,g,b,a) (max 255)")
             .defineListAllowEmpty("color", List.of(216.75, 178.5, 63.75, 255d), () -> 0d, GlintOutlineConfig::validateColor);
 
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> BLACKLIST_ITEM = BUILDER
-            .comment("idk")
-            .defineListAllowEmpty("blacklistItems", List.of("minecraft:iron_ingot"), () -> "", GlintOutlineConfig::validateItemName);
+    private static final ModConfigSpec.ConfigValue<List<? extends String>> CONFIG_BLACKLIST = BUILDER
+            .comment("The blacklist of items")
+            .defineListAllowEmpty("blacklistItems", List.of("minecraft:barrier"), () -> "", GlintOutlineConfig::validateItemName);
 
     public static final ModConfigSpec SPEC = BUILDER.build();
 
@@ -29,5 +34,15 @@ public class GlintOutlineConfig { // NOT 100% parity!
 
     private static boolean validateColor(final Object obj) {
         return obj instanceof Double d && d >= 0 && d <= 255;
+    }
+
+    public static Set<Item> BLACKLISTED_ITEMS = new HashSet<>();
+
+    public static void updateBlacklistCache() {
+        List<? extends String> configList = GlintOutlineConfig.CONFIG_BLACKLIST.get();
+        BLACKLISTED_ITEMS = configList.stream()
+                .map(s -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(s)))
+                .filter(item -> item != Items.AIR)
+                .collect(Collectors.toSet());
     }
 }

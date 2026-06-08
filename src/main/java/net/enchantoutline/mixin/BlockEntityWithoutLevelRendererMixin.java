@@ -3,6 +3,7 @@ package net.enchantoutline.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.enchantoutline.GlintOutline;
+import net.enchantoutline.config.GlintOutlineConfig;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.client.model.ShieldModel;
 import net.minecraft.client.model.TridentModel;
@@ -28,6 +29,7 @@ public class BlockEntityWithoutLevelRendererMixin {
     private void better_enchants$addBlockEntityOutlinePass(ItemStack stack, ItemDisplayContext ctx, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, CallbackInfo ci) {
         if (ctx == ItemDisplayContext.GUI) return;
         if (!stack.hasFoil()) return;
+        if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(stack.getItem())) return;
 
         VertexConsumer consumer = null;
         ModelPart rootPart = null;

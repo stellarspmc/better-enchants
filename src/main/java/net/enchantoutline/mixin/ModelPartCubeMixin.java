@@ -16,6 +16,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Mixin(ModelPart.Cube.class)
 public class ModelPartCubeMixin {
 
@@ -26,24 +29,43 @@ public class ModelPartCubeMixin {
     @Inject(method = "compile", at = @At("HEAD"), cancellable = true)
     public void better_enchants$outlineMagic(PoseStack.Pose pose, VertexConsumer consumer, int p_171335_, int p_171336_, int p_350744_, CallbackInfo ci) {
         if (GlintOutline.IS_RENDERING_OUTLINE.get()) {
+
+            float outlineSize = (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble();
+            List<? extends Double> colorList = GlintOutlineConfig.OUTLINE_COLOR.get();
+            float r = colorList.get(0).floatValue() / 255f;
+            float g = colorList.get(1).floatValue() / 255f;
+            float b = colorList.get(2).floatValue() / 255f;
+
+            Vector3f faceVec = new Vector3f();
+            Vector3f[] defaultVerts = new Vector3f[4];
+            for (int i = 0; i < 4; i++) {
+                defaultVerts[i] = new Vector3f();
+            }
+
             for(var quad : polygons) {
                 var vertices = quad.vertices;
-                Vector3f[] defaultVerts = new Vector3f[vertices.length];
+                int vertexCount = vertices.length;
 
-                for(int i = 0; i < defaultVerts.length; i++) defaultVerts[i] = (new Vector3f(vertices[i].pos)).div(16.0F);
-                Vector3f faceVec = new Vector3f(quad.normal);
-                faceVec.normalize();
-                faceVec.mul((float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble());
+                if (defaultVerts.length < vertexCount) {
+                    int oldLength = defaultVerts.length;
+                    defaultVerts = Arrays.copyOf(defaultVerts, vertexCount);
 
-                Vector3f[] cardinalDirs = VertexHelper.getFaceCardinalDirs(defaultVerts, (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble());
+                    for (int i = oldLength; i < vertexCount; i++) defaultVerts[i] = new Vector3f();
+                }
+
+                for (int i = 0; i < vertexCount; i++) defaultVerts[i].set(vertices[i].pos).div(16.0F);
+                faceVec.set(quad.normal).normalize().mul(outlineSize);
+
+                Vector3f[] cardinalDirs = VertexHelper.getFaceCardinalDirs(defaultVerts, outlineSize);
                 if (cardinalDirs != null) {
+                    Direction nearestDir = Direction.getNearest(quad.normal.x, quad.normal.y, quad.normal.z);
                     for (Vector3f dir : cardinalDirs) {
                         Vector3f[] vertPoses = VertexHelper.growFace(defaultVerts, dir, faceVec);
                         int[] vertexData = new int[vertPoses.length * 8];
 
                         for(int i = 0; i < vertPoses.length; i++) VertexHelper.packVertexData(vertexData, i, vertPoses[i], vertices[i].u, vertices[i].v);
-                        BakedQuad enchantmentQuad = new BakedQuad(VertexHelper.flip(vertexData), -1, Direction.getNearest(quad.normal.x, quad.normal.y, quad.normal.z), null, false, true);
-                        consumer.putBulkData(pose, enchantmentQuad, GlintOutlineConfig.OUTLINE_COLOR.get().getFirst().floatValue() / 255f, GlintOutlineConfig.OUTLINE_COLOR.get().get(1).floatValue() / 255f, GlintOutlineConfig.OUTLINE_COLOR.get().get(2).floatValue() / 255f, .99f, 0, 0); // I love the inconsistency about this
+                        BakedQuad enchantmentQuad = new BakedQuad(VertexHelper.flip(vertexData), -1, nearestDir, null, false, true);
+                        consumer.putBulkData(pose, enchantmentQuad, r, g, b, .99f, 0, 0); // I love the inconsistency about this
                     }
                 }
             }

@@ -48,11 +48,11 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Boss of Mass Destruction (probably?)
 - [x] Punchy (safe to assume applies to Hold My Items and other similar mods)
 - [x] Not Enough Animations
-- [ ] TACZ (no way, support soon)
+- [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
 - [ ] Silent Gear (no idea why, working on it)
 - [x] Sable / Aeronautics
-- [ ] Sinytra Connector (the mixin mess might break stuff)
+- [ ] Sinytra Connector (ytb tested)
 
 > Safe to assume most content mods are supported.
 > 

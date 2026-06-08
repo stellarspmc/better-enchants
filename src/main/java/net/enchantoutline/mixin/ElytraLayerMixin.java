@@ -35,7 +35,7 @@ public class ElytraLayerMixin {
 
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("TAIL"))
     public void enchant_outline$addElytraArmorOutlinePass(PoseStack poseStack, MultiBufferSource bufferSource, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
-        if (!entity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) return;
+        if (!entity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) return; // this is another hardcode, have to get if the item extends ElytraItem
         ResourceLocation texture = getElytraTexture(entity.getItemBySlot(EquipmentSlot.CHEST), entity);
         if (entity instanceof AbstractClientPlayer player) {
             PlayerSkin skin = player.getSkin();
