@@ -1,6 +1,7 @@
 # Enchant Outline ( for 1.21.1 NeoForge )
 
 > Unofficial NeoForge port for 1.21.1 because I wanted it
+>
 > I'm evil I took credit for this mod
 
 ## Special Thanks
@@ -65,6 +66,9 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [ ] Avaritia (only the ones that touches the custom shader thingy like inf sword)
 
 > Safe to assume most content mods are supported.
+>
 > There's of course exceptions, like cataclysm / tacz, there is no way that this simple implementation would support such heavy mod
+>
 > Some edge cases are not tested, it would be great for it to be reported via issues tab
+>
 > In my own modpack, I have done some simple testing, and the spark profiler shows that there are basically no performance loss
