@@ -4,7 +4,7 @@
 
 ## Special Thanks
 
-The original idea from the original repo, I just forked it and did some tinkers, so I won't claim credit
+- [Da0neDatGotAway](https://github.com/Da0neDatGotAway) for the original 1.21.4+ fabric version
 
 ## About
 
@@ -17,8 +17,8 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Trident / Shield rendering
 - [x] Armor rendering
   - [x] Elytra rendering
-- [ ] Proper tests
-  - [ ] Performance
+- [x] Proper tests
+  - [x] Performance
   - [x] Mod Support
 - [x] Config
   - [ ] YACL
@@ -26,14 +26,14 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 ## Mod Support
 
 ### Performance Mods
-- [x] Sodium (v0.8.12 / v0.6.13)
+- [x] Sodium (v0.8.12)
+- [x] Sodium (v0.6.13)
+- [ ] Iris (yet to be tested)
 - [x] ImmediateFast
 - [x] ModernFix
-- [x] Lithium (Shouldn't have impact, it optimizes server stack)
 - [x] FerriteCore
 - [x] Model Gap Fix
-- [x] Particle Core 
-- [ ] Iris (yet to be tested)
+- [x] Particle Core
 
 > Safe to assume that most performance mods are supported.
 
@@ -46,11 +46,12 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Farmer's Delight
 - [x] Advanced Netherite
 - [x] Boss of Mass Destruction (probably?)
+- [x] Punchy (safe to assume applies to Hold My Items and other similar mods)
+- [x] Not Enough Animations
 - [ ] TACZ (no way, support soon)
 - [ ] Cataclysm (partial support)
 - [ ] Silent Gear (no idea why, working on it)
-- [x] Punchy (safe to assume applies to Hold My Items and other similar mods)
-- [ ] Sable / Aeronautics (yet to be tested)
+- [x] Sable / Aeronautics
 - [ ] Sinytra Connector (the mixin mess might break stuff)
 
 > Safe to assume most content mods are supported.
@@ -58,3 +59,5 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 > There's of course exceptions, like cataclysm, there is no way that this simple implementation would support such heavy mod
 > 
 > Some edge cases are not tested, it would be great for it to be reported via issues tab
+> 
+> In my own modpack, I have done some simple testing, and the spark profiler shows that there are basically no performance loss
