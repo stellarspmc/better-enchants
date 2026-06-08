@@ -34,7 +34,7 @@ public abstract class AvaritiaBakedModelMixin {
     @Shadow(remap = false)
     public abstract void renderCosmicLayer(ItemStack stack, ItemDisplayContext transformType, PoseStack pStack, MultiBufferSource source, int packedLight, int packedOverlay);
 
-    @Inject(method = "renderItem", at = @At("HEAD"))
+    @Inject(method = "renderItem", at = @At("HEAD"), cancellable = true)
     private void enchant_outline$addAvaritiaOutlinePass(ItemStack stack, ItemDisplayContext transformType, PoseStack pStack, MultiBufferSource source, int packedLight, int packedOverlay, CallbackInfo ci) {
         if (!(GlintOutlineConfig.ENABLED.get() && GlintOutlineConfig.ITEMS_ENABLED.get())) return;
         if (MixinHelper.inventoryOutline(transformType)) return;
@@ -60,9 +60,13 @@ public abstract class AvaritiaBakedModelMixin {
         for (float[] baseOffset : OUTLINE_OFFSETS_BASE) {
             pStack.pushPose();
             pStack.translate(baseOffset[0] * thickness, baseOffset[1] * thickness, 0.0f);
+
             ((AvaritiaWrappedBridge) this).enchant_outline$bridgeRenderWrapped(stack, pStack, outlineWrapper, packedLight, packedOverlay, true);
-            this.renderCosmicLayer(stack, transformType, pStack, outlineWrapper, packedLight, packedOverlay);
+
             pStack.popPose();
         }
+
+        this.renderCosmicLayer(stack, transformType, pStack, source, packedLight, packedOverlay);
+        ci.cancel();
     }
 }

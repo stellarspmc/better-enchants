@@ -7,6 +7,7 @@ import net.enchantoutline.util.Shaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -35,6 +36,10 @@ public abstract class ItemRendererMixin {
         if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(stack.getItem())) return;
         if (MixinHelper.invertedCheckFoilOrEnchanted(stack)) return;
 
+        if (IClientItemExtensions.of(stack).getCustomRenderer() != null) return;
+        String modId = BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace();
+        if (modId.equals("avaritia")) return;
+
         // are streams slower?
         if (Shaders.itemShaderInstance != null) {
             var glowUniform = Shaders.itemShaderInstance.getUniform("GlowColor");
@@ -50,19 +55,14 @@ public abstract class ItemRendererMixin {
         }
 
         float thickness = (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble();
-        var customRenderer = IClientItemExtensions.of(stack).getCustomRenderer();
 
         for (float[] baseOffset : OUTLINE_OFFSETS_BASE) {
             poseStack.pushPose();
 
             model.applyTransform(ctx, poseStack, leftHand);
-            poseStack.translate(-0.5f + (baseOffset[0] * thickness), -0.5f + (baseOffset[1] * thickness), -0.5f);
+            poseStack.translate(baseOffset[0] * thickness, baseOffset[1] * thickness, 0.0f);
 
-            if (customRenderer != null) {
-                customRenderer.renderByItem(stack, ctx, poseStack, renderType -> bufferSource.getBuffer(Shaders.getItemOutlineLayer()), light, overlay);
-            } else {
-                ((ItemRenderer) (Object) this).renderModelLists(model, stack, light, overlay, poseStack, bufferSource.getBuffer(Shaders.getItemOutlineLayer()));
-            }
+            ((ItemRenderer) (Object) this).renderModelLists(model, stack, light, overlay, poseStack, bufferSource.getBuffer(Shaders.getItemOutlineLayer()));
 
             poseStack.popPose();
         }

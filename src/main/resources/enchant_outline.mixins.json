@@ -15,9 +15,7 @@
     "HumanoidArmorLayerMixin",
     "ItemRendererMixin",
     "ModelPartCubeMixin",
-    "ThrownTridentRendererMixin"
-  ],
-  "mixins": [
+    "ThrownTridentRendererMixin",
     "avaritia.AvaritiaBakedModelMixin",
     "avaritia.AvaritiaWrappedMixin"
   ]

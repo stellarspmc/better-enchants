@@ -11,6 +11,7 @@ import net.minecraft.client.model.TridentModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -19,8 +20,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static com.mojang.text2speech.Narrator.LOGGER;
 
 @Mixin(BlockEntityWithoutLevelRenderer.class)
 public class BlockEntityWithoutLevelRendererMixin {
@@ -49,9 +48,15 @@ public class BlockEntityWithoutLevelRendererMixin {
             poseStack.pushPose();
             poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(180f));
             poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180f));
+        }else {
+            String namespace = BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace();
+            if (namespace.equals("cataclysm") || namespace.equals("silentgear")) {
+                // If the mod uses standard Geo/Baked models inside their BEWLR wrapper,
+                // you can extract their root model parts or custom vertex buffers here.
+                // For now, this safely separates them from breaking vanilla passes.
+            }
         }
 
-        LOGGER.info(stack.getDisplayName().getString());
         // TODO: cataclysm has the custom renderer here (class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer), probably support here
         // TODO: artifact umbrella uses (class UmbrellaArmPoseHandler) which uses an event
         // `UmbrellaArmPoseHelper.setUmbrellaArmPose(event.getRenderer().getModel(), event.getEntity())`
