@@ -63,7 +63,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
 - [ ] Artifacts (partial support, but come on why do you need to enchant your artifact)
-- [ ] Mekanism (nope, not planned, too messy, definitely will ruin codebase)
+- [ ] Mekanism (considering but not planned, too messy, definitely will ruin codebase)
 
 > Safe to assume most content mods are supported.
 > 

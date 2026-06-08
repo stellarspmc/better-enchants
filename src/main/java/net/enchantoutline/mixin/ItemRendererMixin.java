@@ -123,7 +123,6 @@ public abstract class ItemRendererMixin {
         while (clazz != null && clazz != Object.class) {
             try {
                 for (Field field : clazz.getDeclaredFields()) {
-                    // Scenario A: Standard BakedModel field pointer
                     if (BakedModel.class.isAssignableFrom(field.getType())) {
                         field.setAccessible(true);
                         BakedModel internalModel = (BakedModel) field.get(cosmicModel);
