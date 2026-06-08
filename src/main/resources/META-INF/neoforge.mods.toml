@@ -4,7 +4,7 @@ license = "CC0-1.0"
 
 [[mods]]
 modId = "enchant_outline"
-version = "3.3-pre5"
+version = "3.3"
 displayName = "Enchantment Glint Outline"
 displayURL = "https://github.com/stellarspmc/better-enchants"
 logoFile = "../assets/enchant_outline/icon.png"
@@ -20,11 +20,18 @@ modId = "neoforge"
 type = "required"
 versionRange = "[21.1,)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
 
 [[dependencies.enchant_outline]]
 modId = "minecraft"
 type = "required"
 versionRange = "[1.21.1]"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
+
+[[dependencies.enchant_outline]]
+modId = "yet_another_config_lib_v3"
+type = "optional"
+versionRange = "[3.8,)"
+ordering = "NONE"
+side = "CLIENT"

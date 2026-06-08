@@ -15,19 +15,19 @@ public class GlintOutlineConfig { // NOT 100% parity!
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     public static final ModConfigSpec.DoubleValue OUTLINE_SIZE = BUILDER
-            .comment("The Size of the Outline")
+            .comment("Adjust the thickness of the enchanted outline overlay.")
             .defineInRange("outlineSize", 0.025, 0, 1000);
 
     public static final ModConfigSpec.ConfigValue<List<? extends Double>> OUTLINE_COLOR = BUILDER
-            .comment("The Color of the Outline in (r, g, b, a) (max 255)")
+            .comment("Choose the RGBA for the enchanted outline overlay.")
             .defineList(List.of("color"), () -> List.of(216.75, 178.5, 63.75, 255.0), null, GlintOutlineConfig::validateColor, ModConfigSpec.Range.of(4, 4));
 
-    private static final ModConfigSpec.ConfigValue<List<? extends String>> CONFIG_BLACKLIST = BUILDER
-            .comment("A Blacklist for to disable the unwanted items' glow effect")
+    static final ModConfigSpec.ConfigValue<List<? extends String>> CONFIG_BLACKLIST = BUILDER
+            .comment("A list of item IDs (e.g., 'minecraft:barrier') that should not receive the glow outline effect.")
             .defineListAllowEmpty("blacklistItems", List.of("minecraft:barrier"), () -> "", GlintOutlineConfig::validateItemName);
 
     public static final ModConfigSpec.BooleanValue ALL_ENCHANTED_GEAR = BUILDER
-            .comment("Use isEnchanted() instead of isFoil() (Might fix some mod compatibility)")
+            .comment("Bypasses standard vanilla isFoil flags. Turn on to fix Silent Gear tool displays!")
             .define("allEnchantedGear", false);
 
     public static final ModConfigSpec SPEC = BUILDER.build();

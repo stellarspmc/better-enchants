@@ -21,7 +21,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
   - [x] Performance
   - [x] Mod Support
 - [x] Config
-  - [ ] Screen
+  - [x] Screen
 
 ## Mod Support
 
@@ -50,7 +50,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Not Enough Animations
 - [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
-- [ ] Silent Gear (testing)
+- [x] Silent Gear
 - [x] Sable / Aeronautics
 - [ ] Sinytra Connector (ytb tested)
 

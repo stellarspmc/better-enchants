@@ -2,12 +2,14 @@ package net.enchantoutline;
 
 import net.enchantoutline.config.GlintOutlineConfig;
 
+import net.enchantoutline.config.YACLScreenFactory;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.slf4j.Logger;
@@ -23,10 +25,12 @@ public class GlintOutline {
     public GlintOutline(ModContainer modContainer, IEventBus modBusEvent) {
         modContainer.registerConfig(ModConfig.Type.CLIENT, GlintOutlineConfig.SPEC);
         modBusEvent.addListener(GlintOutline::onConfigReload);
-        modContainer.registerExtensionPoint(
-                IConfigScreenFactory.class,
-                (minecraft, parentScreen) -> new ConfigurationScreen(modContainer, parentScreen)
-        );
+
+        boolean isYaclLoaded = FMLLoader.getLoadingModList().getModFileById("yet_another_config_lib_v3") != null;
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class, (minecraft, parentScreen) -> {
+            if (isYaclLoaded) return YACLScreenFactory.create(parentScreen);
+            else return new ConfigurationScreen(modContainer, parentScreen);
+        });
     }
 
     private static void onConfigReload(ModConfigEvent.Reloading event) {
