@@ -45,6 +45,7 @@ public class YACLScreenFactory {
                         .option(ListOption.<String>createBuilder()
                                 .name(Component.literal("Blacklisted Items"))
                                 .description(OptionDescription.of(Component.literal("A list of item IDs (e.g., 'minecraft:barrier') that should not receive the glow outline effect.")))
+                                .initial("")
                                 .binding(
                                         List.of("minecraft:barrier"),
                                         () -> GlintOutlineConfig.CONFIG_BLACKLIST.get().stream()
