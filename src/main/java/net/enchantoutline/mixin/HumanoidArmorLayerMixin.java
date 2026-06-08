@@ -27,7 +27,8 @@ public class HumanoidArmorLayerMixin {
     @Inject(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At("TAIL"))
     private void enchant_outline$addTridentArmorOutlinePass(PoseStack poseStack, MultiBufferSource bufferSource, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<?> model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         ItemStack armorStack = entity.getItemBySlot(slot);
-        if (armorStack.isEmpty() || !armorStack.hasFoil() || armorStack.is(Items.ELYTRA) || GlintOutlineConfig.BLACKLISTED_ITEMS.contains(armorStack.getItem())) return;
+        if (armorStack.isEmpty() || armorStack.is(Items.ELYTRA) || GlintOutlineConfig.BLACKLISTED_ITEMS.contains(armorStack.getItem())) return;
+        if (GlintOutlineConfig.ALL_ENCHANTED_GEAR.get() ? !armorStack.isEnchanted() : !armorStack.hasFoil()) return;
         if (armorStack.getItem() instanceof ArmorItem armoritem) {
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
 

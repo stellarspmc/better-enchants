@@ -28,7 +28,7 @@ public class BlockEntityWithoutLevelRendererMixin {
     @Inject(method = "renderByItem", at = @At("HEAD"))
     private void better_enchants$addBlockEntityOutlinePass(ItemStack stack, ItemDisplayContext ctx, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, CallbackInfo ci) {
         if (ctx == ItemDisplayContext.GUI) return;
-        if (!stack.hasFoil()) return;
+        if (GlintOutlineConfig.ALL_ENCHANTED_GEAR.get() ? !stack.isEnchanted() : !stack.hasFoil()) return;
         if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(stack.getItem())) return;
 
         VertexConsumer consumer = null;

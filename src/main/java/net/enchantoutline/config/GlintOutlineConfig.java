@@ -15,16 +15,20 @@ public class GlintOutlineConfig { // NOT 100% parity!
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     public static final ModConfigSpec.DoubleValue OUTLINE_SIZE = BUILDER
-            .comment("The size of the outline")
+            .comment("The Size of the Outline")
             .defineInRange("outlineSize", 0.025, 0, Double.MAX_VALUE);
 
     public static final ModConfigSpec.ConfigValue<List<? extends Double>> OUTLINE_COLOR = BUILDER
-            .comment("The color of the outline in (r,g,b,a) (max 255)")
+            .comment("The Color of the Outline in (r, g, b, a) (max 255)")
             .defineListAllowEmpty("color", List.of(216.75, 178.5, 63.75, 255d), () -> 0d, GlintOutlineConfig::validateColor);
 
     private static final ModConfigSpec.ConfigValue<List<? extends String>> CONFIG_BLACKLIST = BUILDER
-            .comment("The blacklist of items")
+            .comment("The Blacklist of Items")
             .defineListAllowEmpty("blacklistItems", List.of("minecraft:barrier"), () -> "", GlintOutlineConfig::validateItemName);
+
+    public static final ModConfigSpec.BooleanValue ALL_ENCHANTED_GEAR = BUILDER
+            .comment("Use isEnchanted() instead of isFoil() (Might fix some mod compatibility)")
+            .define("allEnchantedGear", false);
 
     public static final ModConfigSpec SPEC = BUILDER.build();
 

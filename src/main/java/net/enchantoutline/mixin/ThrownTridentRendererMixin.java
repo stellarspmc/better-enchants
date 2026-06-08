@@ -26,7 +26,7 @@ public class ThrownTridentRendererMixin {
 
     @Inject(method = "render(Lnet/minecraft/world/entity/projectile/ThrownTrident;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("HEAD"))
     private void better_enchants$addOutlinePass(ThrownTrident trident, float yaw, float pitch, PoseStack poseStack, MultiBufferSource bufferSource, int light, CallbackInfo ci) {
-        if (!trident.isFoil()) return;
+        if (GlintOutlineConfig.ALL_ENCHANTED_GEAR.get() ? !trident.getWeaponItem().isEnchanted() : !trident.isFoil()) return;
         if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(trident.getWeaponItem().getItem())) return;
 
         VertexConsumer consumer = bufferSource.getBuffer(Shaders.getModelOutlineLayer());

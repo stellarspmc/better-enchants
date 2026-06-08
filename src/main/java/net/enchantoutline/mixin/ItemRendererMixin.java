@@ -28,9 +28,9 @@ public abstract class ItemRendererMixin {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void enchant_outline$addItemOutlinePass(ItemStack stack, ItemDisplayContext ctx, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, BakedModel model, CallbackInfo ci) {
-        if (!stack.hasFoil()) return;
         if (ctx == ItemDisplayContext.GUI) return;
         if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(stack.getItem())) return;
+        if (GlintOutlineConfig.ALL_ENCHANTED_GEAR.get() ? !stack.isEnchanted() : !stack.hasFoil()) return;
 
         if (Shaders.itemShaderInstance != null) {
             var glowUniform = Shaders.itemShaderInstance.getUniform("GlowColor");

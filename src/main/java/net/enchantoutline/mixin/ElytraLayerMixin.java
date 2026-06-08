@@ -3,6 +3,7 @@ package net.enchantoutline.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.enchantoutline.GlintOutline;
+import net.enchantoutline.config.GlintOutlineConfig;
 import net.enchantoutline.util.Shaders;
 import net.minecraft.client.model.ElytraModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -35,8 +36,10 @@ public class ElytraLayerMixin {
 
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("TAIL"))
     public void enchant_outline$addElytraArmorOutlinePass(PoseStack poseStack, MultiBufferSource bufferSource, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
-        if (!entity.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) return; // this is another hardcode, have to get if the item extends ElytraItem
-        ResourceLocation texture = getElytraTexture(entity.getItemBySlot(EquipmentSlot.CHEST), entity);
+        ItemStack elytra = entity.getItemBySlot(EquipmentSlot.CHEST);
+        if (!elytra.is(Items.ELYTRA)) return; // this is another hardcode, have to get if the item extends ElytraItem
+        ResourceLocation texture = getElytraTexture(elytra, entity);
+        if (GlintOutlineConfig.ALL_ENCHANTED_GEAR.get() ? !elytra.isEnchanted() : !elytra.hasFoil()) return;
         if (entity instanceof AbstractClientPlayer player) {
             PlayerSkin skin = player.getSkin();
             if (skin.elytraTexture() != null) texture = skin.elytraTexture();
