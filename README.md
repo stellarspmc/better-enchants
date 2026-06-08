@@ -64,9 +64,6 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [ ] Mekanism (considering but not planned, too messy, definitely will ruin codebase)
 
 > Safe to assume most content mods are supported.
-> 
 > There's of course exceptions, like cataclysm / tacz, there is no way that this simple implementation would support such heavy mod
-> 
 > Some edge cases are not tested, it would be great for it to be reported via issues tab
-> 
 > In my own modpack, I have done some simple testing, and the spark profiler shows that there are basically no performance loss
