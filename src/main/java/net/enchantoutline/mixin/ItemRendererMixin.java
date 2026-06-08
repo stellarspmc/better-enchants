@@ -7,9 +7,10 @@ import net.enchantoutline.util.Shaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +28,7 @@ public abstract class ItemRendererMixin {
             {1.0f, 1.0f},  {1.0f, -1.0f},  {-1.0f, 1.0f}, {-1.0f, -1.0f}
     };
 
+    @SuppressWarnings("ConstantConditions")
     @Inject(method = "render", at = @At("HEAD"))
     private void enchant_outline$addItemOutlinePass(ItemStack stack, ItemDisplayContext ctx, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, BakedModel model, CallbackInfo ci) {
         if (ctx == ItemDisplayContext.GUI) return;
@@ -41,38 +43,33 @@ public abstract class ItemRendererMixin {
             }
         }
 
-        ItemRenderer self = (ItemRenderer) (Object) this;
-        var customRenderer = net.neoforged.neoforge.client.extensions.common.IClientItemExtensions.of(stack).getCustomRenderer();
-        VertexConsumer outlineBuffer1 = bufferSource.getBuffer(Shaders.getItemOutlineLayer());
-        VertexConsumer outlineBuffer2 = bufferSource.getBuffer(Shaders.getItemOutlineLayer());
-
-        MultiBufferSource outlineWrapper = better_enchants$getMultiBufferSource(bufferSource, outlineBuffer1, outlineBuffer2);
         float thickness = (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble();
 
-        for (float[] baseOffset : OUTLINE_OFFSETS_BASE) {
-            poseStack.pushPose();
-            model.applyTransform(ctx, poseStack, leftHand);
-            poseStack.translate(baseOffset[0] * thickness - .5f, baseOffset[1] * thickness - .5f, -.5f);
+        if (BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("silentgear")) { // hacky approach
+            var customRenderer = IClientItemExtensions.of(stack).getCustomRenderer();
+            if (customRenderer == null) return;
 
-            if (customRenderer != null) customRenderer.renderByItem(stack, ctx, poseStack, outlineWrapper, light, overlay);
-            else self.render(stack, ctx, leftHand, poseStack, outlineWrapper, light, overlay, model);
+            MultiBufferSource outlineWrapper = renderType -> bufferSource.getBuffer(Shaders.getItemOutlineLayer());
+            for (float[] baseOffset : OUTLINE_OFFSETS_BASE) {
+                poseStack.pushPose();
 
-            poseStack.popPose();
-        }
-    }
+                model.applyTransform(ctx, poseStack, leftHand);
+                poseStack.translate(-0.5f + (baseOffset[0] * thickness), -0.5f + (baseOffset[1] * thickness), -0.5f);
+                customRenderer.renderByItem(stack, ctx, poseStack, outlineWrapper, light, overlay);
 
-    @Unique // the fuck?
-    private static @NotNull MultiBufferSource better_enchants$getMultiBufferSource(MultiBufferSource bufferSource, VertexConsumer outlineBuffer1, VertexConsumer outlineBuffer2) {
-        boolean[] toggle = new boolean[]{false};
-
-        return renderType -> {
-            String name = renderType.toString();
-            if (name.contains("glint") || name.contains("foil")) {
-                return bufferSource.getBuffer(renderType);
+                poseStack.popPose();
             }
+        } else {
+            ItemRenderer self = (ItemRenderer) (Object) this;
+            VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getItemOutlineLayer());
 
-            toggle[0] = !toggle[0];
-            return toggle[0] ? outlineBuffer1 : outlineBuffer2;
-        };
+            for (float[] baseOffset : OUTLINE_OFFSETS_BASE) {
+                poseStack.pushPose();
+                model.applyTransform(ctx, poseStack, leftHand);
+                poseStack.translate(baseOffset[0] * thickness - .5f, baseOffset[1] * thickness - .5f, -.5f);
+                self.renderModelLists(model, stack, light, overlay, poseStack, outlineBuffer);
+                poseStack.popPose();
+            }
+        }
     }
 }

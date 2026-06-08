@@ -64,6 +64,8 @@ public class ModelPartCubeMixin {
                         int[] vertexData = new int[vertPoses.length * 8];
 
                         for(int i = 0; i < vertPoses.length; i++) VertexHelper.packVertexData(vertexData, i, vertPoses[i], vertices[i].u, vertices[i].v);
+
+                        @SuppressWarnings("ConstantConditions")
                         BakedQuad enchantmentQuad = new BakedQuad(VertexHelper.flip(vertexData), -1, nearestDir, null, false, true);
                         consumer.putBulkData(pose, enchantmentQuad, r, g, b, .99f, 0, 0); // I love the inconsistency about this
                     }
