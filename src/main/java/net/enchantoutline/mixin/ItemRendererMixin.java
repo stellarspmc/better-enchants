@@ -22,8 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-import static com.mojang.text2speech.Narrator.LOGGER;
-
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
 
@@ -43,8 +41,6 @@ public abstract class ItemRendererMixin {
         if (GlintOutlineConfig.BLACKLISTED_ITEMS.contains(stack.getItem())) return;
         if (MixinHelper.invertedCheckFoilOrEnchanted(stack)) return;
         var customRenderer = IClientItemExtensions.of(stack).getCustomRenderer();
-        LOGGER.info("{} {}", stack.getDisplayName().getString(), model.isCustomRenderer());
-
         if (model.isCustomRenderer() && customRenderer == this.blockEntityRenderer) return;
 
         // are streams slower?
@@ -67,8 +63,9 @@ public abstract class ItemRendererMixin {
             poseStack.pushPose();
             model.applyTransform(ctx, poseStack, leftHand);
             poseStack.translate(baseOffset[0] * thickness - .5f, baseOffset[1] * thickness - .5f, -.5f);
-            if (customRenderer != null) customRenderer.renderByItem(stack, ctx, poseStack, outlineWrapper, light, overlay);
-            else ((ItemRenderer) (Object) this).renderModelLists(model, stack, light, overlay, poseStack, outlineBuffer);
+            if (customRenderer != null && customRenderer != this.blockEntityRenderer)  // the weird things
+                customRenderer.renderByItem(stack, ctx, poseStack, outlineWrapper, light, overlay);
+            else ((ItemRenderer) (Object) this).renderModelLists(model, stack, light, overlay, poseStack, outlineBuffer); // vanilla
             poseStack.popPose();
         }
     }
