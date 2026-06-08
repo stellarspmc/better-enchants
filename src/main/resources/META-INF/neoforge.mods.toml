@@ -4,12 +4,12 @@ license = "CC0-1.0"
 
 [[mods]]
 modId = "enchant_outline"
-version = "3.3.1"
+version = "3.3.6"
 displayName = "Enchantment Glint Outline"
 displayURL = "https://github.com/stellarspmc/better-enchants"
-logoFile = "../assets/enchant_outline/icon.png"
-authors = "Da0neDatGotAway"
-credits = "Contributors: yo314159at, Igrium, tcfplayz"
+logoFile = "assets/enchant_outline/icon.png"
+authors = "tcfplayz"
+credits = "Contributors: yo314159at, Igrium, Da0neDatGotAway"
 description = 'Adds a fancy outline to enchanted items. Works with resource packs and vanilla shaders.'
 
 [[mixins]]

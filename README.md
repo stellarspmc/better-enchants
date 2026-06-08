@@ -1,6 +1,7 @@
 # Enchant Outline ( for 1.21.1 NeoForge )
 
 > Unofficial NeoForge port for 1.21.1 because I wanted it
+> I'm evil I took credit for this mod
 
 ## Special Thanks
 
@@ -51,8 +52,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Boss of Mass Destruction (probably?)
 - [x] Punchy (safe to assume applies to Hold My Items and other similar mods)
 - [x] Not Enough Animations
-- [x] Avaritia (the codebase is ruined by this mod)
-- [ ] Silent Gear (broken on v3.3.4, branching to use mixins for avaritia)
+- [x] Silent Gear
 - [x] Sable / Aeronautics (at least it doesn't crash)
 - [x] Reliquary (mostly working, probably requires some tinkering tho)
 - [ ] Sinytra Connector (ytb tested)
@@ -61,7 +61,8 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
 - [ ] Artifacts (partial support, but come on why do you need to enchant your artifact)
-- [ ] Mekanism (considering but not planned, too messy, definitely will ruin codebase)
+- [ ] Mekanism (considering but not planned, too messy)
+- [ ] Avaritia (only the ones that touches the custom shader thingy like inf sword)
 
 > Safe to assume most content mods are supported.
 > There's of course exceptions, like cataclysm / tacz, there is no way that this simple implementation would support such heavy mod

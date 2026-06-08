@@ -20,8 +20,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.mojang.text2speech.Narrator.LOGGER;
-
 @Mixin(BlockEntityWithoutLevelRenderer.class)
 public class BlockEntityWithoutLevelRendererMixin {
 
@@ -51,7 +49,6 @@ public class BlockEntityWithoutLevelRendererMixin {
             poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180f));
         }
 
-        LOGGER.info(stack.getDisplayName().getString());
         // TODO: cataclysm has the custom renderer here (class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer), probably support here
         // TODO: artifact umbrella uses (class UmbrellaArmPoseHandler) which uses an event
         // `UmbrellaArmPoseHelper.setUmbrellaArmPose(event.getRenderer().getModel(), event.getEntity())`
