@@ -54,6 +54,9 @@ public class BlockEntityWithoutLevelRendererMixin {
         // TODO: artifact umbrella uses (class UmbrellaArmPoseHandler) which uses an event
         // `UmbrellaArmPoseHelper.setUmbrellaArmPose(event.getRenderer().getModel(), event.getEntity())`
 
+        // TODO: tacz what the fuck (class AnimateGeoItemRenderer<M extends BedrockAnimatedModel, CTX extends ItemAnimationStateContext>
+        //        extends BlockEntityWithoutLevelRenderer implements IFPGeoItemRenderer)
+
         if (consumer != null) {
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
             rootPart.render(poseStack, consumer, light, overlay);
