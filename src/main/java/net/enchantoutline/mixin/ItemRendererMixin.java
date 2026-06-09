@@ -57,14 +57,13 @@ public abstract class ItemRendererMixin {
             }
         }
         float thickness = (float) GlintOutlineConfig.OUTLINE_SIZE.getAsDouble();
-        MultiBufferSource outlineWrapper = renderType -> bufferSource.getBuffer(Shaders.getItemOutlineLayer());
         VertexConsumer outlineBuffer = bufferSource.getBuffer(Shaders.getItemOutlineLayer());
-        for (float[] baseOffset: OUTLINE_OFFSETS_BASE) {
+        for (float[] baseOffset : OUTLINE_OFFSETS_BASE) {
             poseStack.pushPose();
             model.applyTransform(ctx, poseStack, leftHand);
             poseStack.translate(baseOffset[0] * thickness - .5f, baseOffset[1] * thickness - .5f, -.5f);
-            if (customRenderer != null && customRenderer != this.blockEntityRenderer)  // the weird things
-                customRenderer.renderByItem(stack, ctx, poseStack, outlineWrapper, light, overlay);
+            if (customRenderer != null && customRenderer != this.blockEntityRenderer) // weird stuff
+                customRenderer.renderByItem(stack, ctx, poseStack, renderType -> outlineBuffer, light, overlay);
             else ((ItemRenderer) (Object) this).renderModelLists(model, stack, light, overlay, poseStack, outlineBuffer); // vanilla
             poseStack.popPose();
         }
