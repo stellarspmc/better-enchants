@@ -4,7 +4,7 @@ license = "CC0-1.0"
 
 [[mods]]
 modId = "enchant_outline"
-version = "3.3.6"
+version = "${mod_version}"
 displayName = "Enchantment Glint Outline"
 displayURL = "https://github.com/stellarspmc/better-enchants"
 logoFile = "assets/enchant_outline/icon.png"
@@ -25,7 +25,7 @@ side = "CLIENT"
 [[dependencies.enchant_outline]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.1]"
+versionRange = "[${minecraft_version}]"
 ordering = "NONE"
 side = "CLIENT"
 

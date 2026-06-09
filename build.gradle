@@ -43,7 +43,9 @@ dependencies {
 
 tasks.named('processResources', ProcessResources).configure {
 	var replaceProperties = [
-			version: project.version
+			minecraft_version: minecraft_version,
+			neoforge_version : neoforge_version,
+			mod_version      : mod_version
 	]
 	inputs.properties(replaceProperties)
 
