@@ -58,7 +58,7 @@ I'm not writing one, go read it yourself in the original mod [here](https://gith
 - [x] Reliquary (mostly working, probably requires some tinkering tho)
 - [ ] Sinytra Connector (ytb tested)
 
-## Won't Fix
+### Won't Fix
 - [ ] TACZ (no way, might support soon)
 - [ ] Cataclysm (partial support)
 - [ ] Artifacts (partial support, but come on why do you need to enchant your artifact)
