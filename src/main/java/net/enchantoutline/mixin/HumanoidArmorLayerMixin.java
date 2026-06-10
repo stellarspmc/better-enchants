@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 
-import static com.mojang.text2speech.Narrator.LOGGER;
 
 @Mixin(HumanoidArmorLayer.class)
 public class HumanoidArmorLayerMixin {
@@ -38,7 +37,6 @@ public class HumanoidArmorLayerMixin {
             GlintOutline.IS_RENDERING_OUTLINE.set(true);
 
             for (int layerIdx = 0; layerIdx < armoritem.getMaterial().value().layers().size(); layerIdx++) {
-                LOGGER.info("{} {}", layerIdx, armorStack.getDisplayName());
                 ArmorMaterial.Layer layer = armoritem.getMaterial().value().layers().get(layerIdx);
                 VertexConsumer outlineConsumer = bufferSource.getBuffer(Shaders.getArmorOutlineLayer(ClientHooks.getArmorTexture(entity, armorStack, layer, slot == EquipmentSlot.LEGS, slot)));
 
